@@ -1,0 +1,16 @@
+struct Adjustment{
+    long long TimeStamp;
+    float AValue;
+};
+
+struct Temperature{
+    long long TimeStamp;
+    long TSensorID;
+    float TValue;
+};
+
+struct Entry{
+    long long TimeStamp;
+    long ECalendarID;
+    float EValue;
+};
