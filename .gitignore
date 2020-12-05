@@ -1,2 +1,29 @@
 *.class
 .classpath
+smartuni/Run EntrySubscriber.launch
+smartuni/Run EntryPublisher.launch
+smartuni/README_x64Linux4gcc7.3.0.txt
+smartuni/makefile_schema_x64Linux4gcc7.3.0
+smartuni/hu/bme/mit/cps/smartuniversity/TemperatureTypeSupport.java
+smartuni/hu/bme/mit/cps/smartuniversity/TemperatureTypeCode.java
+smartuni/hu/bme/mit/cps/smartuniversity/TemperatureSeq.java
+smartuni/hu/bme/mit/cps/smartuniversity/TemperatureDataWriter.java
+smartuni/hu/bme/mit/cps/smartuniversity/TemperatureDataReader.java
+smartuni/hu/bme/mit/cps/smartuniversity/Temperature.java
+smartuni/hu/bme/mit/cps/smartuniversity/EntryTypeSupport.java
+smartuni/hu/bme/mit/cps/smartuniversity/EntryTypeCode.java
+smartuni/hu/bme/mit/cps/smartuniversity/EntrySubscriber.java
+smartuni/hu/bme/mit/cps/smartuniversity/EntrySeq.java
+smartuni/hu/bme/mit/cps/smartuniversity/EntryPublisher.java
+smartuni/hu/bme/mit/cps/smartuniversity/EntryDataWriter.java
+smartuni/hu/bme/mit/cps/smartuniversity/EntryDataReader.java
+smartuni/hu/bme/mit/cps/smartuniversity/Entry.java
+smartuni/hu/bme/mit/cps/smartuniversity/AdjustmentTypeSupport.java
+smartuni/hu/bme/mit/cps/smartuniversity/AdjustmentTypeCode.java
+smartuni/hu/bme/mit/cps/smartuniversity/AdjustmentSeq.java
+smartuni/hu/bme/mit/cps/smartuniversity/AdjustmentDataWriter.java
+smartuni/hu/bme/mit/cps/smartuniversity/AdjustmentDataReader.java
+smartuni/hu/bme/mit/cps/smartuniversity/Adjustment.java
+smartuni/build.xml
+smartuni/.project
+smartuni/USER_QOS_PROFILES.xml
