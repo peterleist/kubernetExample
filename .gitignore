@@ -27,3 +27,13 @@ smartuni/hu/bme/mit/cps/smartuniversity/Adjustment.java
 smartuni/build.xml
 smartuni/.project
 smartuni/USER_QOS_PROFILES.xml
+smartuni/hu/bme/mit/cps/smartuniversity/EnvironmentTemperatureTypeSupport.java
+smartuni/hu/bme/mit/cps/smartuniversity/EnvironmentTemperatureTypeCode.java
+smartuni/hu/bme/mit/cps/smartuniversity/EnvironmentTemperatureSubscriber.java
+smartuni/hu/bme/mit/cps/smartuniversity/EnvironmentTemperatureSeq.java
+smartuni/hu/bme/mit/cps/smartuniversity/EnvironmentTemperaturePublisher.java
+smartuni/hu/bme/mit/cps/smartuniversity/EnvironmentTemperatureDataWriter.java
+smartuni/hu/bme/mit/cps/smartuniversity/EnvironmentTemperatureDataReader.java
+smartuni/hu/bme/mit/cps/smartuniversity/EnvironmentTemperature.java
+smartuni/Run EnvironmentTemperatureSubscriber.launch
+smartuni/Run EnvironmentTemperaturePublisher.launch
