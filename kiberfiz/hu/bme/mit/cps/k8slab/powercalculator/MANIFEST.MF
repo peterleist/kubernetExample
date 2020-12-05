@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Created-By: Rorck
+Class-Path: /cpslab/libs/nddsjava.jar /cpslab/libs /cpslab/jars/influxdb-java-2.10.jar /cpslab/jars/okhttp-3.10.0.jar /cpslab/jars/okio-1.14.0.jar /cpslab/jars/retrofit-2.4.0.jar /cpslab/jars/moshi-1.5.0.jar /cpslab/jars/logging-interceptor-3.10.0.jar /cpslab/jars/converter-moshi-2.4.0.jar
+Main-Class: hu.bme.mit.cps.k8slab.powercalculator.PowerCalculator

@@ -1,0 +1,16 @@
+struct Power{
+    long long TimeStamp;
+    float PValue;
+};
+
+struct Voltage{
+    long long TimeStamp;
+    long USensorID;
+    float UValue;
+};
+
+struct Current{
+    long long TimeStamp;
+    long ISensorID;
+    float IValue;
+};

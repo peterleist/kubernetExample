@@ -1,0 +1,392 @@
+Reading resource file
+Starting CurrentPublisher
+Writing Current:
+    TimeStamp: 1607182784035
+    ISensorID: 0
+    IValue: 0.2
+
+Writing Current:
+    TimeStamp: 1607182814036
+    ISensorID: 0
+    IValue: 0.21
+
+Writing Current:
+    TimeStamp: 1607182844037
+    ISensorID: 0
+    IValue: 0.19
+
+Writing Current:
+    TimeStamp: 1607182874037
+    ISensorID: 0
+    IValue: 0.7
+
+Writing Current:
+    TimeStamp: 1607182904038
+    ISensorID: 0
+    IValue: 0.23
+
+Writing Current:
+    TimeStamp: 1607182934038
+    ISensorID: 0
+    IValue: 0.17
+
+Writing Current:
+    TimeStamp: 1607182964038
+    ISensorID: 0
+    IValue: 0.24
+
+Writing Current:
+    TimeStamp: 1607182994039
+    ISensorID: 0
+    IValue: 0.2
+
+Writing Current:
+    TimeStamp: 1607183024039
+    ISensorID: 0
+    IValue: 0.23
+
+Writing Current:
+    TimeStamp: 1607183054040
+    ISensorID: 0
+    IValue: 0.19
+
+Writing Current:
+    TimeStamp: 1607183084040
+    ISensorID: 0
+    IValue: 0.2
+
+Writing Current:
+    TimeStamp: 1607183114041
+    ISensorID: 0
+    IValue: 0.21
+
+Writing Current:
+    TimeStamp: 1607183144041
+    ISensorID: 0
+    IValue: 0.19
+
+Writing Current:
+    TimeStamp: 1607183174041
+    ISensorID: 0
+    IValue: 0.7
+
+Writing Current:
+    TimeStamp: 1607183204042
+    ISensorID: 0
+    IValue: 0.23
+
+Writing Current:
+    TimeStamp: 1607183234042
+    ISensorID: 0
+    IValue: 0.17
+
+Writing Current:
+    TimeStamp: 1607183264042
+    ISensorID: 0
+    IValue: 0.24
+
+Writing Current:
+    TimeStamp: 1607183294043
+    ISensorID: 0
+    IValue: 0.2
+
+Writing Current:
+    TimeStamp: 1607183324043
+    ISensorID: 0
+    IValue: 0.23
+
+Writing Current:
+    TimeStamp: 1607183354044
+    ISensorID: 0
+    IValue: 0.19
+
+Writing Current:
+    TimeStamp: 1607183384044
+    ISensorID: 0
+    IValue: 0.2
+
+Writing Current:
+    TimeStamp: 1607183414044
+    ISensorID: 0
+    IValue: 0.21
+
+Writing Current:
+    TimeStamp: 1607183444045
+    ISensorID: 0
+    IValue: 0.19
+
+Writing Current:
+    TimeStamp: 1607183474045
+    ISensorID: 0
+    IValue: 0.7
+
+Writing Current:
+    TimeStamp: 1607183504046
+    ISensorID: 0
+    IValue: 0.23
+
+Writing Current:
+    TimeStamp: 1607183534046
+    ISensorID: 0
+    IValue: 0.17
+
+Writing Current:
+    TimeStamp: 1607183564047
+    ISensorID: 0
+    IValue: 0.24
+
+Writing Current:
+    TimeStamp: 1607183594047
+    ISensorID: 0
+    IValue: 0.2
+
+Writing Current:
+    TimeStamp: 1607183624047
+    ISensorID: 0
+    IValue: 0.23
+
+Writing Current:
+    TimeStamp: 1607183654048
+    ISensorID: 0
+    IValue: 0.19
+
+Writing Current:
+    TimeStamp: 1607183684048
+    ISensorID: 0
+    IValue: 0.2
+
+Writing Current:
+    TimeStamp: 1607183714049
+    ISensorID: 0
+    IValue: 0.21
+
+Writing Current:
+    TimeStamp: 1607183744049
+    ISensorID: 0
+    IValue: 0.19
+
+Writing Current:
+    TimeStamp: 1607183774049
+    ISensorID: 0
+    IValue: 0.7
+
+Writing Current:
+    TimeStamp: 1607183804050
+    ISensorID: 0
+    IValue: 0.23
+
+Writing Current:
+    TimeStamp: 1607183834050
+    ISensorID: 0
+    IValue: 0.17
+
+Writing Current:
+    TimeStamp: 1607183864051
+    ISensorID: 0
+    IValue: 0.24
+
+Writing Current:
+    TimeStamp: 1607183894051
+    ISensorID: 0
+    IValue: 0.2
+
+Writing Current:
+    TimeStamp: 1607183924051
+    ISensorID: 0
+    IValue: 0.23
+
+Writing Current:
+    TimeStamp: 1607183954052
+    ISensorID: 0
+    IValue: 0.19
+
+Writing Current:
+    TimeStamp: 1607183984052
+    ISensorID: 0
+    IValue: 0.2
+
+Writing Current:
+    TimeStamp: 1607184014053
+    ISensorID: 0
+    IValue: 0.21
+
+Writing Current:
+    TimeStamp: 1607184044053
+    ISensorID: 0
+    IValue: 0.19
+
+Writing Current:
+    TimeStamp: 1607184074054
+    ISensorID: 0
+    IValue: 0.7
+
+Writing Current:
+    TimeStamp: 1607184104054
+    ISensorID: 0
+    IValue: 0.23
+
+Writing Current:
+    TimeStamp: 1607184134054
+    ISensorID: 0
+    IValue: 0.17
+
+Writing Current:
+    TimeStamp: 1607184164055
+    ISensorID: 0
+    IValue: 0.24
+
+Writing Current:
+    TimeStamp: 1607184194055
+    ISensorID: 0
+    IValue: 0.2
+
+Writing Current:
+    TimeStamp: 1607184224056
+    ISensorID: 0
+    IValue: 0.23
+
+Writing Current:
+    TimeStamp: 1607184254056
+    ISensorID: 0
+    IValue: 0.19
+
+Writing Current:
+    TimeStamp: 1607184284056
+    ISensorID: 0
+    IValue: 0.2
+
+Writing Current:
+    TimeStamp: 1607184314057
+    ISensorID: 0
+    IValue: 0.21
+
+Writing Current:
+    TimeStamp: 1607184344057
+    ISensorID: 0
+    IValue: 0.19
+
+Writing Current:
+    TimeStamp: 1607184374058
+    ISensorID: 0
+    IValue: 0.7
+
+Writing Current:
+    TimeStamp: 1607184404058
+    ISensorID: 0
+    IValue: 0.23
+
+Writing Current:
+    TimeStamp: 1607184434058
+    ISensorID: 0
+    IValue: 0.17
+
+Writing Current:
+    TimeStamp: 1607184464059
+    ISensorID: 0
+    IValue: 0.24
+
+Writing Current:
+    TimeStamp: 1607184494059
+    ISensorID: 0
+    IValue: 0.2
+
+Writing Current:
+    TimeStamp: 1607184524060
+    ISensorID: 0
+    IValue: 0.23
+
+Writing Current:
+    TimeStamp: 1607184554060
+    ISensorID: 0
+    IValue: 0.19
+
+Writing Current:
+    TimeStamp: 1607184584061
+    ISensorID: 0
+    IValue: 0.2
+
+Writing Current:
+    TimeStamp: 1607184614061
+    ISensorID: 0
+    IValue: 0.21
+
+Writing Current:
+    TimeStamp: 1607184644061
+    ISensorID: 0
+    IValue: 0.19
+
+Writing Current:
+    TimeStamp: 1607184674062
+    ISensorID: 0
+    IValue: 0.7
+
+Writing Current:
+    TimeStamp: 1607184704062
+    ISensorID: 0
+    IValue: 0.23
+
+Writing Current:
+    TimeStamp: 1607184734063
+    ISensorID: 0
+    IValue: 0.17
+
+Writing Current:
+    TimeStamp: 1607184764063
+    ISensorID: 0
+    IValue: 0.24
+
+Writing Current:
+    TimeStamp: 1607184794064
+    ISensorID: 0
+    IValue: 0.2
+
+Writing Current:
+    TimeStamp: 1607184824064
+    ISensorID: 0
+    IValue: 0.23
+
+Writing Current:
+    TimeStamp: 1607184854064
+    ISensorID: 0
+    IValue: 0.19
+
+Writing Current:
+    TimeStamp: 1607184884065
+    ISensorID: 0
+    IValue: 0.2
+
+Writing Current:
+    TimeStamp: 1607184914065
+    ISensorID: 0
+    IValue: 0.21
+
+Writing Current:
+    TimeStamp: 1607184944066
+    ISensorID: 0
+    IValue: 0.19
+
+Writing Current:
+    TimeStamp: 1607184974066
+    ISensorID: 0
+    IValue: 0.7
+
+Writing Current:
+    TimeStamp: 1607185004067
+    ISensorID: 0
+    IValue: 0.23
+
+Writing Current:
+    TimeStamp: 1607185034067
+    ISensorID: 0
+    IValue: 0.17
+
+Writing Current:
+    TimeStamp: 1607185064068
+    ISensorID: 0
+    IValue: 0.24
+
+Writing Current:
+    TimeStamp: 1607185094068
+    ISensorID: 0
+    IValue: 0.2
+

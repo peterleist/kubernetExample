@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Created-By: Rorck
+Class-Path: /cpslab/libs/nddsjava.jar /cpslab/libs
+Main-Class: hu.bme.mit.cps.k8slab.currentvalidator/CurrentValidator

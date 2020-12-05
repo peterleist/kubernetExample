@@ -1,0 +1,278 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    project: power
+  name: influxdb-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    project: power
+  name: grafana-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: cps-k8slab-power-visualization
+spec:
+    replicas: 1
+    template:
+        metadata:
+            labels:
+                project: power
+                run: visualization
+        spec:
+            containers:
+              - name: grafana
+                image: grafana/grafana
+                imagePullPolicy: IfNotPresent
+                ports:
+                  - containerPort: 3000
+                    hostPort: 3000
+                volumeMounts:
+                  - name: grafana-persistent-storage
+                    mountPath: /var/lib/grafana
+              - name: influxdb
+                image: influxdb
+                imagePullPolicy: IfNotPresent
+                ports:
+                  - containerPort: 8086
+                    hostPort: 8086
+                  - containerPort: 8083
+                    hostPort: 8083
+                volumeMounts:
+                  - name: influx-persistent-storage
+                    mountPath: /var/lib/influxdb
+            volumes:
+              - name: influx-persistent-storage
+                persistentVolumeClaim:
+                    claimName: influxdb-pvc
+              - name: grafana-persistent-storage
+                persistentVolumeClaim:
+                    claimName: grafana-pvc
+    selector:
+      matchLabels: 
+        project: power
+        run: visualization
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: visualization-service
+    labels:
+        run: visualization
+spec:
+    ports:
+      - port: 8086
+        name: influxdb
+      - port: 3000
+        name: grafana
+    clusterIP: 10.96.0.100
+    selector:
+        run: visualization
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: cps-k8slab-power-currentsensor0
+spec:
+    replicas: 1
+    template:
+        metadata:
+            labels:
+                project: power
+        spec:
+            containers:                    
+              - name: currentsensor0
+                image: cps-k8slab-currentsensor0
+                imagePullPolicy: Never
+    selector:
+      matchLabels: 
+        project: power
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: cps-k8slab-power-currentsensor1
+spec:
+    replicas: 1
+    template:
+        metadata:
+            labels:
+                project: power
+        spec:
+            containers:
+              - name: currentsensor1
+                image: cps-k8slab-currentsensor1
+                ports:
+                  - containerPort: 7400
+                    hostPort: 7400
+                imagePullPolicy: Never
+    selector:
+      matchLabels: 
+        project: power
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: cps-k8slab-power-currentsensor2
+spec:
+    replicas: 1
+    template:
+        metadata:
+            labels:
+                project: power
+        spec:
+            containers:
+              - name: currentsensor2
+                image: cps-k8slab-currentsensor2
+                imagePullPolicy: Never
+    selector:
+      matchLabels: 
+        project: power
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: cps-k8slab-power-voltagesensor0
+spec:
+    replicas: 1
+    template:
+        metadata:
+            labels:
+                project: power
+        spec:
+            containers:
+              - name: voltagesensor0
+                image: cps-k8slab-voltagesensor0
+                imagePullPolicy: Never
+    selector:
+      matchLabels: 
+        project: power
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: cps-k8slab-power-voltagesensor1
+spec:
+    replicas: 1
+    template:
+        metadata:
+            labels:
+                project: power
+        spec:
+            containers:                
+              - name: voltagesensor1
+                image: cps-k8slab-voltagesensor1
+                imagePullPolicy: Never
+    selector:
+      matchLabels: 
+        project: power
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: cps-k8slab-power-voltagesensor2
+spec:
+    replicas: 1
+    template:
+        metadata:
+            labels:
+                project: power
+        spec:
+            containers:
+              - name: voltagesensor2
+                image: cps-k8slab-voltagesensor2
+                imagePullPolicy: Never
+    selector:
+      matchLabels: 
+        project: power
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: cps-k8slab-power-currentvalidator
+spec:
+    replicas: 1
+    template:
+        metadata:
+            labels:
+                project: power
+        spec:
+            containers:
+              - name: currentvalidator
+                image: cps-k8slab-currentvalidator
+                imagePullPolicy: Never
+    selector:
+      matchLabels: 
+        project: power
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: cps-k8slab-power-voltagevalidator
+spec:
+    replicas: 1
+    template:
+        metadata:
+            labels:
+                project: power
+        spec:
+            containers:
+              - name: voltagevalidator
+                image: cps-k8slab-voltagevalidator
+                imagePullPolicy: Never
+    selector:
+      matchLabels: 
+        project: power
+        
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: cps-k8slab-power-powercalculator
+spec:
+    replicas: 1
+    template:
+        metadata:
+            labels:
+                project: power
+        spec:
+            containers:
+              - name: powercalculator
+                image: cps-k8slab-powercalculator
+                imagePullPolicy: Never
+                terminationMessagePath: "/tmp/my-log"
+    selector:
+      matchLabels: 
+        project: power
+---
+#apiVersion: extensions/v1beta1
+#kind: Deployment
+#metadata:
+#    name: cps-k8slab-power-monitor
+#spec:
+#    replicas: 1
+#    template:
+#        metadata:
+#            labels:
+#                project: power
+#        spec:
+#            containers:
+#              - name: monitor
+#                image: cps-k8slab-monitor
+#                imagePullPolicy: Never

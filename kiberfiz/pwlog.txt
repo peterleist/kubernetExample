@@ -1,0 +1,255 @@
+Power subscriber sleeping for 4 sec...
+Power subscriber sleeping for 4 sec...
+Power subscriber sleeping for 4 sec...
+Power subscriber sleeping for 4 sec...
+Voltage :
+    TimeStamp: 1607190686873
+    USensorID: 1111
+    UValue: 230.0
+
+Current :
+    TimeStamp: 1607190685873
+    ISensorID: 1101
+    IValue: 0.2
+Valid Power:
+    TimeStamp: 1607190686873
+    PValue: 46.0
+
+Power subscriber sleeping for 4 sec...
+Voltage :
+    TimeStamp: 1607190686873
+    USensorID: 1111
+    UValue: 230.0
+
+Current :
+    TimeStamp: 1607190699903
+    ISensorID: 0
+    IValue: 0.21
+Valid Power:
+    TimeStamp: 1607190699903
+    PValue: 48.3
+
+Power subscriber sleeping for 4 sec...
+Voltage :
+    TimeStamp: 1607190686873
+    USensorID: 1111
+    UValue: 230.0
+
+Current :
+    TimeStamp: 1607190699903
+    ISensorID: 0
+    IValue: 0.21
+Valid Power:
+    TimeStamp: 1607190699903
+    PValue: 48.3
+
+Power subscriber sleeping for 4 sec...
+Voltage :
+    TimeStamp: 1607190686873
+    USensorID: 1111
+    UValue: 230.0
+
+Current :
+    TimeStamp: 1607190699903
+    ISensorID: 0
+    IValue: 0.21
+Valid Power:
+    TimeStamp: 1607190699903
+    PValue: 48.3
+
+Power subscriber sleeping for 4 sec...
+Voltage :
+    TimeStamp: 1607190686873
+    USensorID: 1111
+    UValue: 230.0
+
+Current :
+    TimeStamp: 1607190714679
+    ISensorID: 0
+    IValue: 0.21
+Valid Power:
+    TimeStamp: 1607190714679
+    PValue: 48.3
+
+Power subscriber sleeping for 4 sec...
+Voltage :
+    TimeStamp: 1607190716874
+    USensorID: 1011
+    UValue: 229.8
+
+Current :
+    TimeStamp: 1607190715875
+    ISensorID: 2
+    IValue: 0.21
+Valid Power:
+    TimeStamp: 1607190716874
+    PValue: 48.258
+
+Power subscriber sleeping for 4 sec...
+Voltage :
+    TimeStamp: 1607190716874
+    USensorID: 1011
+    UValue: 229.8
+
+Current :
+    TimeStamp: 1607190715875
+    ISensorID: 2
+    IValue: 0.21
+Valid Power:
+    TimeStamp: 1607190716874
+    PValue: 48.258
+
+Power subscriber sleeping for 4 sec...
+Voltage :
+    TimeStamp: 1607190716874
+    USensorID: 1011
+    UValue: 229.8
+
+Current :
+    TimeStamp: 1607190715875
+    ISensorID: 2
+    IValue: 0.21
+Valid Power:
+    TimeStamp: 1607190716874
+    PValue: 48.258
+
+Power subscriber sleeping for 4 sec...
+Voltage :
+    TimeStamp: 1607190716874
+    USensorID: 1011
+    UValue: 229.8
+
+Current :
+    TimeStamp: 1607190715875
+    ISensorID: 2
+    IValue: 0.21
+Valid Power:
+    TimeStamp: 1607190716874
+    PValue: 48.258
+
+Power subscriber sleeping for 4 sec...
+Voltage :
+    TimeStamp: 1607190716874
+    USensorID: 1011
+    UValue: 229.8
+
+Current :
+    TimeStamp: 1607190715875
+    ISensorID: 2
+    IValue: 0.21
+Valid Power:
+    TimeStamp: 1607190716874
+    PValue: 48.258
+
+Power subscriber sleeping for 4 sec...
+Voltage :
+    TimeStamp: 1607190716874
+    USensorID: 1011
+    UValue: 229.8
+
+Current :
+    TimeStamp: 1607190715875
+    ISensorID: 2
+    IValue: 0.21
+Valid Power:
+    TimeStamp: 1607190716874
+    PValue: 48.258
+
+Power subscriber sleeping for 4 sec...
+Voltage :
+    TimeStamp: 1607190716874
+    USensorID: 1011
+    UValue: 229.8
+
+Current :
+    TimeStamp: 1607190742190
+    ISensorID: 1
+    IValue: 0.21
+Valid Power:
+    TimeStamp: 1607190742190
+    PValue: 48.258
+
+Power subscriber sleeping for 4 sec...
+Voltage :
+    TimeStamp: 1607190746875
+    USensorID: 1110
+    UValue: 229.9
+
+Current :
+    TimeStamp: 1607190745876
+    ISensorID: 2
+    IValue: 0.19
+Valid Power:
+    TimeStamp: 1607190746875
+    PValue: 43.681
+
+Power subscriber sleeping for 4 sec...
+Voltage :
+    TimeStamp: 1607190746875
+    USensorID: 1110
+    UValue: 229.9
+
+Current :
+    TimeStamp: 1607190745876
+    ISensorID: 2
+    IValue: 0.19
+Valid Power:
+    TimeStamp: 1607190746875
+    PValue: 43.681
+
+Power subscriber sleeping for 4 sec...
+Voltage :
+    TimeStamp: 1607190746875
+    USensorID: 1110
+    UValue: 229.9
+
+Current :
+    TimeStamp: 1607190745876
+    ISensorID: 2
+    IValue: 0.19
+Valid Power:
+    TimeStamp: 1607190746875
+    PValue: 43.681
+
+Power subscriber sleeping for 4 sec...
+Voltage :
+    TimeStamp: 1607190746875
+    USensorID: 1110
+    UValue: 229.9
+
+Current :
+    TimeStamp: 1607190745876
+    ISensorID: 2
+    IValue: 0.19
+Valid Power:
+    TimeStamp: 1607190746875
+    PValue: 43.681
+
+Power subscriber sleeping for 4 sec...
+Voltage :
+    TimeStamp: 1607190746875
+    USensorID: 1110
+    UValue: 229.9
+
+Current :
+    TimeStamp: 1607190745876
+    ISensorID: 2
+    IValue: 0.19
+Valid Power:
+    TimeStamp: 1607190746875
+    PValue: 43.681
+
+Power subscriber sleeping for 4 sec...
+Voltage :
+    TimeStamp: 1607190746875
+    USensorID: 1110
+    UValue: 229.9
+
+Current :
+    TimeStamp: 1607190745876
+    ISensorID: 2
+    IValue: 0.19
+Valid Power:
+    TimeStamp: 1607190746875
+    PValue: 43.681
+
