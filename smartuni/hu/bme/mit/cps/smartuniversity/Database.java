@@ -20,11 +20,12 @@ public class Database {
 		databaseConnection.enableBatch(BatchOptions.DEFAULTS);
 	}
 	
-	public void addData(long timestamp, float value){
-		databaseConnection.write(Point.measurement("power")
+	public void addData(long timestamp, float value, int id){
+		databaseConnection.write(Point.measurement("adjustments")
         	    .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
         	    .addField("value", value)
         	    .addField("timestamp", timestamp)
+        	    .addField("labID", id)
         	    .build());
 	}
 

@@ -324,7 +324,7 @@ public class AdjustmentCalculator {
             	instance = validate(); 
             	if (instance != null) {
 					System.out.println("Valid Adjustment" + instance.toString());
-					db.addData(instance.TimeStamp, instance.AValue);
+					db.addData(instance.TimeStamp, instance.AValue, instance.ALabID);
 				}
             	
                 try {
