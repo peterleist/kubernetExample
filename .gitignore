@@ -117,3 +117,6 @@ smartuni/libs/librtixml2z.a
 smartuni/libs/librtixml2zd.a
 smartuni/libs/nddsjava.jar
 smartuni/rti_license.dat
+smartuni/README_x64Linux3gcc5.4.0.txt
+smartuni/makefile_schema_x64Linux3gcc5.4.0
+smartuni/libs/
