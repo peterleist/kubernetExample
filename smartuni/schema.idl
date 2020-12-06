@@ -1,5 +1,6 @@
 struct Adjustment{
     long long TimeStamp;
+    long ALabID;
     float AValue;
 };
 
@@ -13,6 +14,7 @@ struct Temperature{
 struct Entry{
     long long TimeStamp;
     long ECalendarID;
+    long ELabID;
     float EValue;
 };
 

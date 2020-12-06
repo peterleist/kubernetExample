@@ -183,7 +183,7 @@ public class WeatherForecast {
 	                /* Modify the instance to be written here */
 	            	System.out.println(formatter.format(calendar.getTime()));
 	            	
-	                instance.TValue= data.get(formatter.format(calendar.getTime())); //TODO NULL
+	                instance.TValue = data.get(formatter.format(calendar.getTime())); //TODO NULL
 	                instance.TimeStamp = calendar.getInstance().getTimeInMillis();
 	                
 	                n++;
