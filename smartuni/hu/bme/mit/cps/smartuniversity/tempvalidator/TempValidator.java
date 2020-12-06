@@ -20,11 +20,13 @@ import com.rti.dds.subscription.Subscriber;
 import com.rti.dds.subscription.ViewStateKind;
 import com.rti.dds.topic.Topic;
 
+import hu.bme.mit.cps.smartuniversity.Database;
 import hu.bme.mit.cps.smartuniversity.Temperature;
 import hu.bme.mit.cps.smartuniversity.TemperatureDataReader;
 import hu.bme.mit.cps.smartuniversity.TemperatureDataWriter;
 import hu.bme.mit.cps.smartuniversity.TemperatureSeq;
 import hu.bme.mit.cps.smartuniversity.TemperatureTypeSupport;
+import okio.Timeout;
 
 public class TempValidator {
 	
@@ -55,6 +57,9 @@ public class TempValidator {
     // -----------------------------------------------------------------------
 
     private static ArrayList<Temperature> data;
+    private static ArrayList<Temperature> dataToleantBefore;
+    private static ArrayList<Temperature> dataTolerantAfter;
+    private static int time_out = 0;
     
     private static ArrayList<Temperature> initData() {
     	Temperature instance0 = new Temperature();
@@ -143,6 +148,100 @@ public class TempValidator {
     	return instance;
 	}
     
+    private static Temperature validateBefore() {
+    	int n = 0;
+    	Temperature instance = null;
+		for (int i = 0; i < dataToleantBefore.size(); i++) {
+			if(dataToleantBefore.get(i).TSensorID == i) {
+				n++;
+			}
+		}	
+		if(n >= 2) {
+			System.out.println("Entered big if");
+			if (dataToleantBefore.get(0).TValue == dataToleantBefore.get(1).TValue && dataToleantBefore.get(1).TValue == dataToleantBefore.get(2).TValue) {
+				instance = new Temperature();
+				instance.TSensorID = 1111;
+				instance.TValue = dataToleantBefore.get(0).TValue;
+				instance.TLabID = lab_id;
+				instance.TimeStamp = Math.max(dataToleantBefore.get(0).TimeStamp, Math.max(dataToleantBefore.get(1).TimeStamp, dataToleantBefore.get(2).TimeStamp));
+				dataToleantBefore = initData();
+				
+			}else if (dataToleantBefore.get(0).TValue == dataToleantBefore.get(1).TValue) {
+				instance = new Temperature();
+				instance.TSensorID = 1011;
+				instance.TValue = dataToleantBefore.get(0).TValue;
+				instance.TLabID = lab_id;
+				instance.TimeStamp = Math.max(dataToleantBefore.get(0).TimeStamp, dataToleantBefore.get(1).TimeStamp);
+				dataToleantBefore = initData();
+				
+			}else if (dataToleantBefore.get(0).TValue == dataToleantBefore.get(2).TValue) {
+				instance = new Temperature();
+				instance.TSensorID = 1101;
+				instance.TValue = dataToleantBefore.get(0).TValue;
+				instance.TLabID = lab_id;
+				instance.TimeStamp = Math.max(dataToleantBefore.get(0).TimeStamp, dataToleantBefore.get(2).TimeStamp);
+				dataToleantBefore = initData();
+				
+			}else if (data.get(1).TValue == dataToleantBefore.get(2).TValue) {
+				instance = new Temperature();
+				instance.TSensorID = 1110;
+				instance.TValue = dataToleantBefore.get(1).TValue;
+				instance.TLabID = lab_id;
+				instance.TimeStamp = Math.max(dataToleantBefore.get(2).TimeStamp, dataToleantBefore.get(1).TimeStamp);
+				dataToleantBefore = initData();
+				
+			}
+		}
+    	return instance;
+	}
+    
+    private static Temperature validateAfter() {
+    	int n = 0;
+    	Temperature instance = null;
+		for (int i = 0; i < dataTolerantAfter.size(); i++) {
+			if(dataTolerantAfter.get(i).TSensorID == i) {
+				n++;
+			}
+		}	
+		if(n >= 2) {
+			System.out.println("Entered big if");
+			if (dataTolerantAfter.get(0).TValue == dataTolerantAfter.get(1).TValue && dataTolerantAfter.get(1).TValue == dataTolerantAfter.get(2).TValue) {
+				instance = new Temperature();
+				instance.TSensorID = 1111;
+				instance.TValue = dataTolerantAfter.get(0).TValue;
+				instance.TLabID = lab_id;
+				instance.TimeStamp = Math.max(dataTolerantAfter.get(0).TimeStamp, Math.max(dataTolerantAfter.get(1).TimeStamp, dataTolerantAfter.get(2).TimeStamp));
+				dataTolerantAfter = initData();
+				
+			}else if (dataTolerantAfter.get(0).TValue == dataTolerantAfter.get(1).TValue) {
+				instance = new Temperature();
+				instance.TSensorID = 1011;
+				instance.TValue = dataTolerantAfter.get(0).TValue;
+				instance.TLabID = lab_id;
+				instance.TimeStamp = Math.max(dataTolerantAfter.get(0).TimeStamp, dataTolerantAfter.get(1).TimeStamp);
+				dataTolerantAfter = initData();
+				
+			}else if (dataTolerantAfter.get(0).TValue == dataTolerantAfter.get(2).TValue) {
+				instance = new Temperature();
+				instance.TSensorID = 1101;
+				instance.TValue = dataTolerantAfter.get(0).TValue;
+				instance.TLabID = lab_id;
+				instance.TimeStamp = Math.max(dataTolerantAfter.get(0).TimeStamp, dataTolerantAfter.get(2).TimeStamp);
+				dataTolerantAfter = initData();
+				
+			}else if (data.get(1).TValue == dataTolerantAfter.get(2).TValue) {
+				instance = new Temperature();
+				instance.TSensorID = 1110;
+				instance.TValue = dataTolerantAfter.get(1).TValue;
+				instance.TLabID = lab_id;
+				instance.TimeStamp = Math.max(dataTolerantAfter.get(2).TimeStamp, dataTolerantAfter.get(1).TimeStamp);
+				dataTolerantAfter = initData();
+				
+			}
+		}
+    	return instance;
+	}
+    
     // --- Constructors: -----------------------------------------------------
 
     private TempValidator() {
@@ -160,7 +259,7 @@ public class TempValidator {
         DataReaderListener listener = null;
         TemperatureDataReader reader = null;
         TemperatureDataWriter writer = null;
-        
+        Database db = new Database();
         data = initData();
         
         try {
@@ -267,6 +366,26 @@ public class TempValidator {
                 if(valid != null) {
                 	System.out.println("Valid Temperature" + valid.toString());
                 	writer.write(valid, instance_handle);
+                	db.addData(valid.TimeStamp, valid.TValue, valid.TLabID, "lab");
+                	time_out = 0;
+                }
+                
+                if(time_out >= 10) {
+                	Temperature validAfter = validateAfter();
+                	if(validAfter != null) {
+                		writer.write(validAfter, instance_handle);
+                		db.addData(validAfter.TimeStamp, validAfter.TValue, validAfter.TLabID, "lab");
+                	}
+                	else {
+                		Temperature validBefore = validateBefore();
+                		if(validBefore != null) {
+                    		writer.write(validBefore, instance_handle);
+                    		db.addData(validBefore.TimeStamp, validBefore.TValue, validBefore.TLabID, "lab");
+                    	}
+                	}
+                }
+                else {
+                	time_out++;
                 }
                 
                 try {
@@ -335,6 +454,14 @@ public class TempValidator {
                         	if( instance.TLabID == lab_id) {
                         	data.set(instance.TSensorID, instance);
                             //printData();
+                        	}
+                        	
+                        	if(instance.TLabID == lab_id-1) {
+                        	dataToleantBefore.set(instance.TSensorID, instance);	
+                        	}
+                        	
+                        	if(instance.TLabID == lab_id+1) {
+                        	dataTolerantAfter.set(instance.TSensorID, instance);		
                         	}
                         }
                         

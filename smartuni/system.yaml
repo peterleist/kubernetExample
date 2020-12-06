@@ -148,6 +148,63 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+    name: cps-smartuni-tempsensor1-0
+spec:
+    replicas: 1
+    template:
+        metadata:
+            labels:
+                project: smartuni
+        spec:
+            containers:                    
+              - name: tempsensor1-0
+                image: cps-smartuni-tempsensor1-0
+                imagePullPolicy: Never
+    selector:
+      matchLabels: 
+        project: smartuni
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: cps-smartuni-tempsensor1-1
+spec:
+    replicas: 1
+    template:
+        metadata:
+            labels:
+                project: smartuni
+        spec:
+            containers:                    
+              - name: tempsensor1-1
+                image: cps-smartuni-tempsensor1-1
+                imagePullPolicy: Never
+    selector:
+      matchLabels: 
+        project: smartuni
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: cps-smartuni-tempsensor1-2
+spec:
+    replicas: 1
+    template:
+        metadata:
+            labels:
+                project: smartuni
+        spec:
+            containers:                    
+              - name: tempsensor1-2
+                image: cps-smartuni-tempsensor1-2
+                imagePullPolicy: Never
+    selector:
+      matchLabels: 
+        project: smartuni
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
     name: cps-smartuni-tempvalidator0 
 spec:
     replicas: 1
@@ -159,6 +216,25 @@ spec:
             containers:
               - name: tempvalidator0 
                 image: cps-smartuni-tempvalidator0 
+                imagePullPolicy: Never
+    selector:
+      matchLabels: 
+        project: smartuni
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: cps-smartuni-tempvalidator1 
+spec:
+    replicas: 1
+    template:
+        metadata:
+            labels:
+                project: smartuni
+        spec:
+            containers:
+              - name: tempvalidator1 
+                image: cps-smartuni-tempvalidator1 
                 imagePullPolicy: Never
     selector:
       matchLabels: 
@@ -205,6 +281,25 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+    name: cps-smartuni-calendar1
+spec:
+    replicas: 1
+    template:
+        metadata:
+            labels:
+                project: smartuni
+        spec:
+            containers:
+              - name: calendar1
+                image: cps-smartuni-calendar1
+                imagePullPolicy: Never
+    selector:
+      matchLabels: 
+        project: smartuni
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
     name: cps-smartuni-calendarvalidator0
 spec:
     replicas: 1
@@ -216,6 +311,25 @@ spec:
             containers:
               - name: calendarvalidator0
                 image: cps-smartuni-calendarvalidator0
+                imagePullPolicy: Never
+    selector:
+      matchLabels: 
+        project: smartuni
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: cps-smartuni-calendarvalidator1
+spec:
+    replicas: 1
+    template:
+        metadata:
+            labels:
+                project: smartuni
+        spec:
+            containers:
+              - name: calendarvalidator1
+                image: cps-smartuni-calendarvalidator1
                 imagePullPolicy: Never
     selector:
       matchLabels: 
@@ -238,8 +352,26 @@ spec:
                 imagePullPolicy: Never
     selector:
       matchLabels: 
-        project: smartuni
-        
+        project: smartuni    
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: cps-smartuni-adjustment1
+spec:
+    replicas: 1
+    template:
+        metadata:
+            labels:
+                project: smartuni
+        spec:
+            containers:
+              - name: adjustment1
+                image: cps-smartuni-adjustment1
+                imagePullPolicy: Never
+    selector:
+      matchLabels: 
+        project: smartuni    
 ---
 #apiVersion: extensions/v1beta1
 #kind: Deployment

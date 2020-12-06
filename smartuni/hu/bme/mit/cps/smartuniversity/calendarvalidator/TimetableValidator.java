@@ -61,6 +61,7 @@ import com.rti.dds.publication.Publisher;
 import com.rti.dds.subscription.*;
 import com.rti.dds.topic.*;
 
+import hu.bme.mit.cps.smartuniversity.Database;
 import hu.bme.mit.cps.smartuniversity.Entry;
 import hu.bme.mit.cps.smartuniversity.EntryDataReader;
 import hu.bme.mit.cps.smartuniversity.EntryDataWriter;
@@ -199,7 +200,7 @@ public class TimetableValidator {
         DataReaderListener listener = null;
         EntryDataReader reader = null;
         EntryDataWriter writer = null;
-
+        Database db = new Database();
         data = initData();
         
         try {
@@ -307,6 +308,7 @@ public class TimetableValidator {
                 if(valid != null) {
                 	System.out.println("Valid Entry" + valid.toString());
                 	writer.write(valid, instance_handle);
+                	db.addData(valid.TimeStamp, valid.EValue, valid.ELabID, "calendar");
                 }
                 
                 try {
