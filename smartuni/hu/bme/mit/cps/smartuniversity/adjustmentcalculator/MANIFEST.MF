@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Created-By: peterleist
+Class-Path: /smartuniversity/libs/nddsjava.jar /smartuniversity/libs /smartuniversity/jars/influxdb-java-2.10.jar /smartuniversity/jars/okhttp-3.10.0.jar /smartuniversity/jars/okio-1.14.0.jar /smartuniversity/jars/retrofit-2.4.0.jar /smartuniversity/jars/moshi-1.5.0.jar /smartuniversity/jars/logging-interceptor-3.10.0.jar /smartuniversity/jars/converter-moshi-2.4.0.jar
+Main-Class: hu.bme.mit.cps.smartuniversity.adjustmentcalculator.AdjustmentCalculator

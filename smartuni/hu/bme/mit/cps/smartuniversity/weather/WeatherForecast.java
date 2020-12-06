@@ -122,7 +122,7 @@ public class WeatherForecast {
 	            }                   
 
 	            // --- Create topic --- //
-	            
+
 	            /* Register type before creating topic */
 	            String typeName = EnvironmentTemperatureTypeSupport.get_type_name();
 	            EnvironmentTemperatureTypeSupport.register_type(participant, typeName);
@@ -131,7 +131,7 @@ public class WeatherForecast {
 	            the configuration file USER_QOS_PROFILES.xml */
 
 	            topic = participant.create_topic(
-	                "CurrentTopic",
+	                "WeatherTopic",
 	                typeName, DomainParticipant.TOPIC_QOS_DEFAULT,
 	                null /* listener */, StatusKind.STATUS_MASK_NONE);
 	            if (topic == null) {
