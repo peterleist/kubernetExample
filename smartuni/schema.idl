@@ -6,6 +6,7 @@ struct Adjustment{
 struct Temperature{
     long long TimeStamp;
     long TSensorID;
+    long TLabID;
     float TValue;
 };
 
