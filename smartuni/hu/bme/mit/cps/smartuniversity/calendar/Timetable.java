@@ -89,7 +89,7 @@ private static int lab_id = 0;
             String readLine = "";
 
             while ((readLine = b.readLine()) != null) {
-            	String[] separatedData = readLine.split(":");
+            	String[] separatedData = readLine.split(";");
             	System.out.println(separatedData[0]);
                 data.put(separatedData[0], Float.parseFloat(separatedData[1]));
             }
@@ -165,9 +165,8 @@ private static int lab_id = 0;
             Entry instance = new Entry();
             
             Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DAY_OF_YEAR, 1);
             
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             
             
             InstanceHandle_t instance_handle = InstanceHandle_t.HANDLE_NIL;
@@ -186,21 +185,29 @@ private static int lab_id = 0;
 
                 /* Modify the instance to be written here */
 
-                instance.ECalendarID = number;
-                instance.EValue= data.get(formatter.format(calendar.getTime())); //TODO NULL
-                instance.ELabID = lab_id;
-                instance.TimeStamp = calendar.getInstance().getTimeInMillis();
-                
+            	System.out.println(formatter.format(calendar.getTime()));
+            	
+            	if(data.containsKey(formatter.format(calendar.getTime()))) {
+                    instance.ECalendarID = number;
+                    instance.EValue= data.get(formatter.format(calendar.getTime())); //TODO NULL
+                    instance.ELabID = lab_id;
+                    instance.TimeStamp = calendar.getInstance().getTimeInMillis();
+                    
+               
+                    System.out.println("Writing Entry" + instance.toString());
+
+                    /* Write data */
+                    writer.write(instance, instance_handle);
+                    
+            	}
+
                 n++;
                 
                 if(n == data.size()) {
                 	n = 0;
                 }
                 
-                System.out.println("Writing Entry" + instance.toString());
                 
-                /* Write data */
-                writer.write(instance, instance_handle);
                 try {
                     Thread.sleep(sendPeriodMillis);
                 } catch (InterruptedException ix) {
