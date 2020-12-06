@@ -137,7 +137,7 @@ private static int lab_id = 0;
             the configuration file USER_QOS_PROFILES.xml */
 
             topic = participant.create_topic(
-                "CurrentTopic",
+                "EntryTopic",
                 typeName, DomainParticipant.TOPIC_QOS_DEFAULT,
                 null /* listener */, StatusKind.STATUS_MASK_NONE);
             if (topic == null) {
