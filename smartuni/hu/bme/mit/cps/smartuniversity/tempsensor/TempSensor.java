@@ -80,7 +80,7 @@ private static int lab_id = 0;
         
         try {
 
-            File f = new File("./temp"+number+".txt");
+            File f = new File("./temp"+lab_id+"-"+number+".txt");
 
             BufferedReader b = new BufferedReader(new FileReader(f));
 
@@ -133,7 +133,7 @@ private static int lab_id = 0;
             the configuration file USER_QOS_PROFILES.xml */
 
             topic = participant.create_topic(
-                "CurrentTopic",
+                "TempTopic",
                 typeName, DomainParticipant.TOPIC_QOS_DEFAULT,
                 null /* listener */, StatusKind.STATUS_MASK_NONE);
             if (topic == null) {

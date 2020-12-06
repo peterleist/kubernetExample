@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Created-By: peterleist
+Class-Path: /smartuniversity/libs/nddsjava.jar /smartuniversity/libs
+Main-Class: hu.bme.mit.cps.smartuniversity.tempvalidator.TempValidator
