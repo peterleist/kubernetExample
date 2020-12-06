@@ -164,7 +164,7 @@ private static int lab_id = 0;
             /* Create data sample for writing */
             Entry instance = new Entry();
             
-            Calendar calendar = Calendar.getInstance();
+            
             
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             
@@ -175,14 +175,14 @@ private static int lab_id = 0;
             and register the keyed instance prior to writing */
             //instance_handle = writer.register_instance(instance);
 
-            final long sendPeriodMillis = 30 * 1000; // 4 seconds
+            final long sendPeriodMillis = 4 * 1000; // 4 seconds
 
             int n = 0;
             
             for (int count = 0;
             (sampleCount == 0) || (count < sampleCount);
             ++count) {
-
+            	Calendar calendar = Calendar.getInstance();
                 /* Modify the instance to be written here */
 
             	System.out.println(formatter.format(calendar.getTime()));

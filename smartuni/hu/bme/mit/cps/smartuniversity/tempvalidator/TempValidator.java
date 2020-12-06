@@ -109,6 +109,7 @@ public class TempValidator {
 				instance = new Temperature();
 				instance.TSensorID = 1111;
 				instance.TValue = data.get(0).TValue;
+				instance.TLabID = lab_id;
 				instance.TimeStamp = Math.max(data.get(0).TimeStamp, Math.max(data.get(1).TimeStamp, data.get(2).TimeStamp));
 				data = initData();
 				
@@ -116,6 +117,7 @@ public class TempValidator {
 				instance = new Temperature();
 				instance.TSensorID = 1011;
 				instance.TValue = data.get(0).TValue;
+				instance.TLabID = lab_id;
 				instance.TimeStamp = Math.max(data.get(0).TimeStamp, data.get(1).TimeStamp);
 				data = initData();
 				
@@ -123,6 +125,7 @@ public class TempValidator {
 				instance = new Temperature();
 				instance.TSensorID = 1101;
 				instance.TValue = data.get(0).TValue;
+				instance.TLabID = lab_id;
 				instance.TimeStamp = Math.max(data.get(0).TimeStamp, data.get(2).TimeStamp);
 				data = initData();
 				
@@ -130,6 +133,7 @@ public class TempValidator {
 				instance = new Temperature();
 				instance.TSensorID = 1110;
 				instance.TValue = data.get(1).TValue;
+				instance.TLabID = lab_id;
 				instance.TimeStamp = Math.max(data.get(2).TimeStamp, data.get(1).TimeStamp);
 				data = initData();
 				

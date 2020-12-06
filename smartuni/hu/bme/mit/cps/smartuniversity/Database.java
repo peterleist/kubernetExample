@@ -20,8 +20,8 @@ public class Database {
 		databaseConnection.enableBatch(BatchOptions.DEFAULTS);
 	}
 	
-	public void addData(long timestamp, float value, int id){
-		databaseConnection.write(Point.measurement("adjustments")
+	public void addData(long timestamp, float value, int id, String meas){
+		databaseConnection.write(Point.measurement(meas)
         	    .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
         	    .addField("value", value)
         	    .addField("timestamp", timestamp)

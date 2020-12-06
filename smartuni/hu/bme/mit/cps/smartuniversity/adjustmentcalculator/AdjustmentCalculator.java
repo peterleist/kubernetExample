@@ -1,5 +1,4 @@
 
-
 package hu.bme.mit.cps.smartuniversity.adjustmentcalculator;
 
 /* PowerSubscriber.java
@@ -76,96 +75,100 @@ import hu.bme.mit.cps.smartuniversity.TemperatureTypeSupport;
 
 public class AdjustmentCalculator {
 	private static int lab_id = 0;
-    // -----------------------------------------------------------------------
-    // Public Methods
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// Public Methods
+	// -----------------------------------------------------------------------
 
-    public static void main(String[] args) {
-    	 if (args.length >= 1) {
-         	lab_id = Integer.valueOf(args[0]).intValue();
-         }
-    	
-        // --- Get domain ID --- //
-        int domainId = 0;
-        //if (args.length >= 1) {
-        //    domainId = Integer.valueOf(args[0]).intValue();
-        //}
+	public static void main(String[] args) {
+		if (args.length >= 1) {
+			lab_id = Integer.valueOf(args[0]).intValue();
+		}
 
-        // -- Get max loop count; 0 means infinite loop --- //
-        int sampleCount = 0;
-        //if (args.length >= 2) {
-        //    sampleCount = Integer.valueOf(args[1]).intValue();
-        //}
+		// --- Get domain ID --- //
+		int domainId = 0;
+		// if (args.length >= 1) {
+		// domainId = Integer.valueOf(args[0]).intValue();
+		// }
 
-        /* Uncomment this to turn on additional logging
-        Logger.get_instance().set_verbosity_by_category(
-            LogCategory.NDDS_CONFIG_LOG_CATEGORY_API,
-            LogVerbosity.NDDS_CONFIG_LOG_VERBOSITY_STATUS_ALL);
-        */
+		// -- Get max loop count; 0 means infinite loop --- //
+		int sampleCount = 0;
+		// if (args.length >= 2) {
+		// sampleCount = Integer.valueOf(args[1]).intValue();
+		// }
 
-        // --- Run --- //
-        subscriberMain(domainId, sampleCount);
-    }
+		/*
+		 * Uncomment this to turn on additional logging
+		 * Logger.get_instance().set_verbosity_by_category(
+		 * LogCategory.NDDS_CONFIG_LOG_CATEGORY_API,
+		 * LogVerbosity.NDDS_CONFIG_LOG_VERBOSITY_STATUS_ALL);
+		 */
 
-    // -----------------------------------------------------------------------
-    // Private Methods
-    // -----------------------------------------------------------------------
-
-    private static Temperature temp = null;
-    private static Entry entry = null;
-    private static EnvironmentTemperature envTemp = null;
-    
-    
-    private static void initData() {
-    	temp = null;
-    	entry = null;
-    	envTemp = null;
-    }
-    
-    private static void printData() {
-		System.out.print("Temperature " + temp.toString() + "\nEntry " + entry.toString() + "\nEnvTemp " + envTemp.toString());
+		// --- Run --- //
+		subscriberMain(domainId, sampleCount);
 	}
-    
-    private static Adjustment validate() {
-    	Adjustment adjustment = null;
-    	if (temp != null && entry != null && entry.ELabID == lab_id) {
-    		printData();
-    		
-			if ((((temp.TimeStamp/1000)-(entry.TimeStamp/1000)) <= 30) && entry.EValue == 1) {
+
+	// -----------------------------------------------------------------------
+	// Private Methods
+	// -----------------------------------------------------------------------
+
+	private static Temperature temp = null;
+	private static Entry entry = null;
+	private static EnvironmentTemperature envTemp = null;
+
+	private static void initData() {
+		temp = null;
+		entry = null;
+		envTemp = null;
+	}
+
+	private static void printData() {
+		System.out.print(
+				"Temperature " + temp.toString() + "\nEntry " + entry.toString() + "\nEnvTemp " + envTemp.toString());
+	}
+
+	private static Adjustment validate() {
+		Adjustment adjustment = null;
+		if (temp != null && entry != null && entry.ELabID == lab_id) {
+			printData();
+
+			if ((((temp.TimeStamp / 1000) - (entry.TimeStamp / 1000)) <= 30) && entry.EValue == 1) {
 				adjustment = new Adjustment();
 				calculateAdjustmentWork(adjustment);
-			} else if ((((temp.TimeStamp/1000)-(entry.TimeStamp/1000)) <= 30) && entry.EValue == 0) {
+			} else if ((((temp.TimeStamp / 1000) - (entry.TimeStamp / 1000)) <= 30) && entry.EValue == 0) {
 				adjustment = new Adjustment();
 				calculateAdjustmentNoWork(adjustment);
 			}
 		} else if (temp != null) {
-			if (((temp.TimeStamp/1000)-(entry.TimeStamp/1000)) <= 30) {
-				adjustment = new Adjustment();
-				calculateAdjustmentWork(adjustment);
-			}
+			adjustment = new Adjustment();
+			calculateAdjustmentWork(adjustment);
 		}
-    	
-    	return adjustment;
-    }
-    
-    // --- Constructors: -----------------------------------------------------
 
-    private static void calculateAdjustmentWork(Adjustment adjustment) {
-    	if (temp.TValue < 21) {
+		return adjustment;
+	}
+
+	// --- Constructors: -----------------------------------------------------
+
+	private static void calculateAdjustmentWork(Adjustment adjustment) {
+		if (temp.TValue < 21) {
 			adjustment.AValue = Math.min(21 - temp.TValue, 10);
-			adjustment.TimeStamp = Math.max(temp.TimeStamp, entry.TimeStamp);
+			adjustment.TimeStamp = Math.max(temp.TimeStamp, entry == null? 0: entry.TimeStamp);
 			adjustment.ALabID = lab_id;
 		} else if (temp.TValue > 24) {
 			adjustment.AValue = Math.max(24 - temp.TValue, -10);
-			adjustment.TimeStamp = Math.max(temp.TimeStamp, entry.TimeStamp);
+			adjustment.TimeStamp = Math.max(temp.TimeStamp, entry == null? 0: entry.TimeStamp);
 			adjustment.ALabID = lab_id;
 		}
-    }
-    
-    private static void calculateAdjustmentNoWork(Adjustment adjustment) {
-    	float avg = (envTemp.TValue + temp.TValue) / 2;
+		else {
+			adjustment.AValue = 0;
+			adjustment.TimeStamp = temp.TimeStamp;
+			adjustment.ALabID = lab_id;
+		}
+	}
 
-    	if (temp.TValue < 14) {
+	private static void calculateAdjustmentNoWork(Adjustment adjustment) {
+		float avg = (envTemp.TValue + temp.TValue) / 2;
+
+		if (temp.TValue < 14) {
 			adjustment.AValue = Math.min(14 - avg, 10);
 			adjustment.TimeStamp = Math.max(temp.TimeStamp, entry.TimeStamp);
 			adjustment.ALabID = lab_id;
@@ -174,293 +177,271 @@ public class AdjustmentCalculator {
 			adjustment.TimeStamp = Math.max(temp.TimeStamp, entry.TimeStamp);
 			adjustment.ALabID = lab_id;
 		}
-    }
-    
-    private AdjustmentCalculator() {
-        super();
-    }
+		else {
+			adjustment.AValue = 0;
+			adjustment.TimeStamp = temp.TimeStamp;
+			adjustment.ALabID = lab_id;
+		}
+	}
 
-    // -----------------------------------------------------------------------
+	private AdjustmentCalculator() {
+		super();
+	}
 
-    private static void subscriberMain(int domainId, int sampleCount) {
+	// -----------------------------------------------------------------------
 
-        DomainParticipant participant = null;
-        Subscriber subscriber = null;
-        Topic entryTopic = null;
-        Topic temperatureTopic = null;
-        Topic weatherTopic = null;
-        TemperatureListener temperatureListener = null;
-        EntryListener entryListener = null;
-        WeatherListener weatherListener = null;
-        EntryDataReader entryReader = null;
-        TemperatureDataReader temperatureReader = null;
-        EnvironmentTemperatureDataReader weatherReader = null;
-        Database db = new Database();
-        
-        try {
+	private static void subscriberMain(int domainId, int sampleCount) {
 
-            // --- Create participant --- //
+		DomainParticipant participant = null;
+		Subscriber subscriber = null;
+		Topic entryTopic = null;
+		Topic temperatureTopic = null;
+		Topic weatherTopic = null;
+		TemperatureListener temperatureListener = null;
+		EntryListener entryListener = null;
+		WeatherListener weatherListener = null;
+		EntryDataReader entryReader = null;
+		TemperatureDataReader temperatureReader = null;
+		EnvironmentTemperatureDataReader weatherReader = null;
+		Database db = new Database();
 
-            /* To customize participant QoS, use
-            the configuration file
-            USER_QOS_PROFILES.xml */
+		try {
 
-            participant = DomainParticipantFactory.TheParticipantFactory.
-            create_participant(
-                domainId, DomainParticipantFactory.PARTICIPANT_QOS_DEFAULT,
-                null /* listener */, StatusKind.STATUS_MASK_NONE);
-            if (participant == null) {
-                System.err.println("create_participant error\n");
-                return;
-            }                         
+			// --- Create participant --- //
 
-            // --- Create subscriber --- //
+			/*
+			 * To customize participant QoS, use the configuration file
+			 * USER_QOS_PROFILES.xml
+			 */
 
-            /* To customize subscriber QoS, use
-            the configuration file USER_QOS_PROFILES.xml */
+			participant = DomainParticipantFactory.TheParticipantFactory.create_participant(domainId,
+					DomainParticipantFactory.PARTICIPANT_QOS_DEFAULT, null /* listener */, StatusKind.STATUS_MASK_NONE);
+			if (participant == null) {
+				System.err.println("create_participant error\n");
+				return;
+			}
 
-            subscriber = participant.create_subscriber(
-                DomainParticipant.SUBSCRIBER_QOS_DEFAULT, null /* listener */,
-                StatusKind.STATUS_MASK_NONE);
-            if (subscriber == null) {
-                System.err.println("create_subscriber error\n");
-                return;
-            }     
+			// --- Create subscriber --- //
 
-            // --- Create topic --- //
+			/*
+			 * To customize subscriber QoS, use the configuration file USER_QOS_PROFILES.xml
+			 */
 
-            /* Register type before creating topic */
-            String temperatureTypeName = TemperatureTypeSupport.get_type_name(); 
-            TemperatureTypeSupport.register_type(participant, temperatureTypeName);
-            String entryTypeName = EntryTypeSupport.get_type_name(); 
-            EntryTypeSupport.register_type(participant, entryTypeName);
-            String weatherTypeName = EnvironmentTemperatureTypeSupport.get_type_name();
-            EnvironmentTemperatureTypeSupport.register_type(participant, weatherTypeName);
+			subscriber = participant.create_subscriber(DomainParticipant.SUBSCRIBER_QOS_DEFAULT, null /* listener */,
+					StatusKind.STATUS_MASK_NONE);
+			if (subscriber == null) {
+				System.err.println("create_subscriber error\n");
+				return;
+			}
 
-            /* To customize topic QoS, use
-            the configuration file USER_QOS_PROFILES.xml */
+			// --- Create topic --- //
 
-            temperatureTopic = participant.create_topic(
-                "TempTopic",
-                temperatureTypeName, DomainParticipant.TOPIC_QOS_DEFAULT,
-                null /* listener */, StatusKind.STATUS_MASK_NONE);
-            if (temperatureTopic == null) {
-                System.err.println("create_topic error\n");
-                return;
-            }
-            
-            entryTopic = participant.create_topic(
-                "EntryTopic",
-                entryTypeName, DomainParticipant.TOPIC_QOS_DEFAULT,
-                null /* listener */, StatusKind.STATUS_MASK_NONE);
-            if (entryTopic == null) {
-                System.err.println("create_topic error\n");
-                return;
-            }
-            
-            weatherTopic = participant.create_topic(
-        		"WeatherTopic",
-        		weatherTypeName, DomainParticipant.TOPIC_QOS_DEFAULT,
-        		null /* listener */, StatusKind.STATUS_MASK_NONE);
-        	if (weatherTopic == null) {
-        		System.err.println("create_topic error\n");
-        		return;
-        	}
+			/* Register type before creating topic */
+			String temperatureTypeName = TemperatureTypeSupport.get_type_name();
+			TemperatureTypeSupport.register_type(participant, temperatureTypeName);
+			String entryTypeName = EntryTypeSupport.get_type_name();
+			EntryTypeSupport.register_type(participant, entryTypeName);
+			String weatherTypeName = EnvironmentTemperatureTypeSupport.get_type_name();
+			EnvironmentTemperatureTypeSupport.register_type(participant, weatherTypeName);
 
-            // --- Create reader --- //
+			/*
+			 * To customize topic QoS, use the configuration file USER_QOS_PROFILES.xml
+			 */
 
-            temperatureListener = new TemperatureListener();
+			temperatureTopic = participant.create_topic("TempTopic", temperatureTypeName,
+					DomainParticipant.TOPIC_QOS_DEFAULT, null /* listener */, StatusKind.STATUS_MASK_NONE);
+			if (temperatureTopic == null) {
+				System.err.println("create_topic error\n");
+				return;
+			}
 
-            /* To customize data reader QoS, use
-            the configuration file USER_QOS_PROFILES.xml */
+			entryTopic = participant.create_topic("EntryTopic", entryTypeName, DomainParticipant.TOPIC_QOS_DEFAULT,
+					null /* listener */, StatusKind.STATUS_MASK_NONE);
+			if (entryTopic == null) {
+				System.err.println("create_topic error\n");
+				return;
+			}
 
-            temperatureReader = (TemperatureDataReader)
-            subscriber.create_datareader(
-            	temperatureTopic, Subscriber.DATAREADER_QOS_DEFAULT, temperatureListener,
-                StatusKind.STATUS_MASK_ALL);
-            if (temperatureReader == null) {
-                System.err.println("create_datareader error\n");
-                return;
-            }   
-            
-            entryListener = new EntryListener();
+			weatherTopic = participant.create_topic("WeatherTopic", weatherTypeName,
+					DomainParticipant.TOPIC_QOS_DEFAULT, null /* listener */, StatusKind.STATUS_MASK_NONE);
+			if (weatherTopic == null) {
+				System.err.println("create_topic error\n");
+				return;
+			}
 
-            /* To customize data reader QoS, use
-            the configuration file USER_QOS_PROFILES.xml */
+			// --- Create reader --- //
 
-            entryReader = (EntryDataReader)
-            subscriber.create_datareader(
-            	entryTopic, Subscriber.DATAREADER_QOS_DEFAULT, entryListener,
-                StatusKind.STATUS_MASK_ALL);
-            if (entryReader == null) {
-                System.err.println("create_datarea)der error\n");
-                return;
-            }
-            
-            weatherListener = new WeatherListener();
-            
-            
-            weatherReader = (EnvironmentTemperatureDataReader)
-            subscriber.create_datareader(
-        		weatherTopic, Subscriber.DATAREADER_QOS_DEFAULT, weatherListener,
-        		StatusKind.STATUS_MASK_ALL);
-            if (weatherReader == null) {
-            	System.err.println("create_datareader error\n");
-            }
-            
-            
+			temperatureListener = new TemperatureListener();
 
-            // --- Wait for data --- //
+			/*
+			 * To customize data reader QoS, use the configuration file
+			 * USER_QOS_PROFILES.xml
+			 */
 
-            final long receivePeriodSec = 4;
-            Adjustment instance = null;
-            
-            for (int count = 0;
-            (sampleCount == 0) || (count < sampleCount);
-            ++count) {
-                System.out.println("Adjustment subscriber sleeping for "
-                + receivePeriodSec + " sec...");
+			temperatureReader = (TemperatureDataReader) subscriber.create_datareader(temperatureTopic,
+					Subscriber.DATAREADER_QOS_DEFAULT, temperatureListener, StatusKind.STATUS_MASK_ALL);
+			if (temperatureReader == null) {
+				System.err.println("create_datareader error\n");
+				return;
+			}
 
-            	instance = validate(); 
-            	if (instance != null) {
+			entryListener = new EntryListener();
+
+			/*
+			 * To customize data reader QoS, use the configuration file
+			 * USER_QOS_PROFILES.xml
+			 */
+
+			entryReader = (EntryDataReader) subscriber.create_datareader(entryTopic, Subscriber.DATAREADER_QOS_DEFAULT,
+					entryListener, StatusKind.STATUS_MASK_ALL);
+			if (entryReader == null) {
+				System.err.println("create_datarea)der error\n");
+				return;
+			}
+
+			weatherListener = new WeatherListener();
+
+			weatherReader = (EnvironmentTemperatureDataReader) subscriber.create_datareader(weatherTopic,
+					Subscriber.DATAREADER_QOS_DEFAULT, weatherListener, StatusKind.STATUS_MASK_ALL);
+			if (weatherReader == null) {
+				System.err.println("create_datareader error\n");
+			}
+
+			// --- Wait for data --- //
+
+			final long receivePeriodSec = 4;
+			Adjustment instance = null;
+
+			for (int count = 0; (sampleCount == 0) || (count < sampleCount); ++count) {
+				System.out.println("Adjustment subscriber sleeping for " + receivePeriodSec + " sec...");
+
+				instance = validate();
+				if (instance != null) {
 					System.out.println("Valid Adjustment" + instance.toString());
-					db.addData(instance.TimeStamp, instance.AValue, instance.ALabID);
+					db.addData(instance.TimeStamp, instance.AValue, instance.ALabID, "adjustment");
 				}
-            	
-                try {
-                    Thread.sleep(receivePeriodSec * 1000);  // in millisec
-                } catch (InterruptedException ix) {
-                    System.err.println("INTERRUPTED");
-                    break;
-                }
-            }
-        } finally {
 
-            // --- Shutdown --- //
+				try {
+					Thread.sleep(receivePeriodSec * 1000); // in millisec
+				} catch (InterruptedException ix) {
+					System.err.println("INTERRUPTED");
+					break;
+				}
+			}
+		} finally {
 
-            if(participant != null) {
-                participant.delete_contained_entities();
+			// --- Shutdown --- //
 
-                DomainParticipantFactory.TheParticipantFactory.
-                delete_participant(participant);
-            }
-            /* RTI Data Distribution Service provides the finalize_instance()
-            method for users who want to release memory used by the
-            participant factory singleton. Uncomment the following block of
-            code for clean destruction of the participant factory
-            singleton. */
-            //DomainParticipantFactory.finalize_instance();
-        }
-    }
+			if (participant != null) {
+				participant.delete_contained_entities();
 
-    // -----------------------------------------------------------------------
-    // Private Types
-    // -----------------------------------------------------------------------
+				DomainParticipantFactory.TheParticipantFactory.delete_participant(participant);
+			}
+			/*
+			 * RTI Data Distribution Service provides the finalize_instance() method for
+			 * users who want to release memory used by the participant factory singleton.
+			 * Uncomment the following block of code for clean destruction of the
+			 * participant factory singleton.
+			 */
+			// DomainParticipantFactory.finalize_instance();
+		}
+	}
 
-    // =======================================================================
+	// -----------------------------------------------------------------------
+	// Private Types
+	// -----------------------------------------------------------------------
 
-    private static class TemperatureListener extends DataReaderAdapter {
+	// =======================================================================
 
-        TemperatureSeq _dataSeq = new TemperatureSeq();
-        SampleInfoSeq _infoSeq = new SampleInfoSeq();
+	private static class TemperatureListener extends DataReaderAdapter {
 
-        public void on_data_available(DataReader reader) {
-        	TemperatureDataReader temperatureReader =
-            (TemperatureDataReader)reader;
+		TemperatureSeq _dataSeq = new TemperatureSeq();
+		SampleInfoSeq _infoSeq = new SampleInfoSeq();
 
-            try {
-            	temperatureReader.take(
-                    _dataSeq, _infoSeq,
-                    ResourceLimitsQosPolicy.LENGTH_UNLIMITED,
-                    SampleStateKind.ANY_SAMPLE_STATE,
-                    ViewStateKind.ANY_VIEW_STATE,
-                    InstanceStateKind.ANY_INSTANCE_STATE);
+		public void on_data_available(DataReader reader) {
+			TemperatureDataReader temperatureReader = (TemperatureDataReader) reader;
 
-                for(int i = 0; i < _dataSeq.size(); ++i) {
-                    SampleInfo info = (SampleInfo)_infoSeq.get(i);
+			try {
+				temperatureReader.take(_dataSeq, _infoSeq, ResourceLimitsQosPolicy.LENGTH_UNLIMITED,
+						SampleStateKind.ANY_SAMPLE_STATE, ViewStateKind.ANY_VIEW_STATE,
+						InstanceStateKind.ANY_INSTANCE_STATE);
 
-                    if (info.valid_data) {
-                    	Temperature instance = _dataSeq.get(i);
-                        if (instance.TSensorID > 999) {
+				for (int i = 0; i < _dataSeq.size(); ++i) {
+					SampleInfo info = (SampleInfo) _infoSeq.get(i);
+
+					if (info.valid_data) {
+						Temperature instance = _dataSeq.get(i);
+						if (instance.TSensorID > 999) {
 							temp = instance;
 						}
-                    }
-                }
-            } catch (RETCODE_NO_DATA noData) {
-                // No data to process
-            } finally {
-            	temperatureReader.return_loan(_dataSeq, _infoSeq);
-            }
-        }
-    }
-    
-    private static class EntryListener extends DataReaderAdapter {
+					}
+				}
+			} catch (RETCODE_NO_DATA noData) {
+				// No data to process
+			} finally {
+				temperatureReader.return_loan(_dataSeq, _infoSeq);
+			}
+		}
+	}
 
-        EntrySeq _dataSeq = new EntrySeq();
-        SampleInfoSeq _infoSeq = new SampleInfoSeq();
+	private static class EntryListener extends DataReaderAdapter {
 
-        public void on_data_available(DataReader reader) {
-        	EntryDataReader entryReader =
-            (EntryDataReader)reader;
+		EntrySeq _dataSeq = new EntrySeq();
+		SampleInfoSeq _infoSeq = new SampleInfoSeq();
 
-            try {
-            	entryReader.take(
-                    _dataSeq, _infoSeq,
-                    ResourceLimitsQosPolicy.LENGTH_UNLIMITED,
-                    SampleStateKind.ANY_SAMPLE_STATE,
-                    ViewStateKind.ANY_VIEW_STATE,
-                    InstanceStateKind.ANY_INSTANCE_STATE);
+		public void on_data_available(DataReader reader) {
+			EntryDataReader entryReader = (EntryDataReader) reader;
 
-                for(int i = 0; i < _dataSeq.size(); ++i) {
-                    SampleInfo info = (SampleInfo)_infoSeq.get(i);
+			try {
+				entryReader.take(_dataSeq, _infoSeq, ResourceLimitsQosPolicy.LENGTH_UNLIMITED,
+						SampleStateKind.ANY_SAMPLE_STATE, ViewStateKind.ANY_VIEW_STATE,
+						InstanceStateKind.ANY_INSTANCE_STATE);
 
-                    if (info.valid_data) {
-                    	Entry instance = _dataSeq.get(i);
-                    	if (instance.ECalendarID < 999) {
+				for (int i = 0; i < _dataSeq.size(); ++i) {
+					SampleInfo info = (SampleInfo) _infoSeq.get(i);
+
+					if (info.valid_data) {
+						Entry instance = _dataSeq.get(i);
+						if (instance.ECalendarID < 999) {
 							entry = instance;
 						}
-                    }
-                }
-            } catch (RETCODE_NO_DATA noData) {
-                // No data to process
-            } finally {
-            	entryReader.return_loan(_dataSeq, _infoSeq);
-            }
-        }
-    }
-    
-    private static class WeatherListener extends DataReaderAdapter {
-    	EnvironmentTemperatureSeq _dataSeq = new EnvironmentTemperatureSeq();
-    	SampleInfoSeq _infoSeq = new SampleInfoSeq();
-    	
-    	public void on_data_available(DataReader reader) {
-    		EnvironmentTemperatureDataReader weatherReader =
-    		(EnvironmentTemperatureDataReader)reader;
-    		
-    		try {
-    			weatherReader.take(
-                    _dataSeq, _infoSeq,
-                    ResourceLimitsQosPolicy.LENGTH_UNLIMITED,
-                    SampleStateKind.ANY_SAMPLE_STATE,
-                    ViewStateKind.ANY_VIEW_STATE,
-                    InstanceStateKind.ANY_INSTANCE_STATE);
+					}
+				}
+			} catch (RETCODE_NO_DATA noData) {
+				// No data to process
+			} finally {
+				entryReader.return_loan(_dataSeq, _infoSeq);
+			}
+		}
+	}
 
-                for(int i = 0; i < _dataSeq.size(); ++i) {
-                    SampleInfo info = (SampleInfo)_infoSeq.get(i);
+	private static class WeatherListener extends DataReaderAdapter {
+		EnvironmentTemperatureSeq _dataSeq = new EnvironmentTemperatureSeq();
+		SampleInfoSeq _infoSeq = new SampleInfoSeq();
 
-                    if (info.valid_data) {
-                    	EnvironmentTemperature instance = _dataSeq.get(i);
-                    	if (instance.TValue < 999) {
+		public void on_data_available(DataReader reader) {
+			EnvironmentTemperatureDataReader weatherReader = (EnvironmentTemperatureDataReader) reader;
+
+			try {
+				weatherReader.take(_dataSeq, _infoSeq, ResourceLimitsQosPolicy.LENGTH_UNLIMITED,
+						SampleStateKind.ANY_SAMPLE_STATE, ViewStateKind.ANY_VIEW_STATE,
+						InstanceStateKind.ANY_INSTANCE_STATE);
+
+				for (int i = 0; i < _dataSeq.size(); ++i) {
+					SampleInfo info = (SampleInfo) _infoSeq.get(i);
+
+					if (info.valid_data) {
+						EnvironmentTemperature instance = _dataSeq.get(i);
+						if (instance.TValue < 999) {
 							envTemp = instance;
 						}
-                    }
-                }
-            } catch (RETCODE_NO_DATA noData) {
-                // No data to process
-            } finally {
-            	weatherReader.return_loan(_dataSeq, _infoSeq);
-            }
-        }
-    }
+					}
+				}
+			} catch (RETCODE_NO_DATA noData) {
+				// No data to process
+			} finally {
+				weatherReader.return_loan(_dataSeq, _infoSeq);
+			}
+		}
+	}
 }
-

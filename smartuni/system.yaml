@@ -1,0 +1,258 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    project: smartuni
+  name: influxdb-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    project: smartuni
+  name: grafana-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: cps-smartuni-visualization
+spec:
+    replicas: 1
+    template:
+        metadata:
+            labels:
+                project: smartuni
+                run: visualization
+        spec:
+            containers:
+              - name: grafana
+                image: grafana/grafana
+                imagePullPolicy: IfNotPresent
+                ports:
+                  - containerPort: 3000
+                    hostPort: 3000
+                volumeMounts:
+                  - name: grafana-persistent-storage
+                    mountPath: /var/lib/grafana
+              - name: influxdb
+                image: influxdb
+                imagePullPolicy: IfNotPresent
+                ports:
+                  - containerPort: 8086
+                    hostPort: 8086
+                  - containerPort: 8083
+                    hostPort: 8083
+                volumeMounts:
+                  - name: influx-persistent-storage
+                    mountPath: /var/lib/influxdb
+            volumes:
+              - name: influx-persistent-storage
+                persistentVolumeClaim:
+                    claimName: influxdb-pvc
+              - name: grafana-persistent-storage
+                persistentVolumeClaim:
+                    claimName: grafana-pvc
+    selector:
+      matchLabels: 
+        project: smartuni
+        run: visualization
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: visualization-service
+    labels:
+        run: visualization
+spec:
+    ports:
+      - port: 8086
+        name: influxdb
+      - port: 3000
+        name: grafana
+    clusterIP: 10.96.0.100
+    selector:
+        run: visualization
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: cps-smartuni-tempsensor0-0
+spec:
+    replicas: 1
+    template:
+        metadata:
+            labels:
+                project: smartuni
+        spec:
+            containers:                    
+              - name: tempsensor0-0
+                image: cps-smartuni-tempsensor0-0
+                imagePullPolicy: Never
+    selector:
+      matchLabels: 
+        project: smartuni
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: cps-smartuni-tempsensor0-1
+spec:
+    replicas: 1
+    template:
+        metadata:
+            labels:
+                project: smartuni
+        spec:
+            containers:
+              - name: tempsensor0-1
+                image: cps-smartuni-tempsensor0-1
+                ports:
+                  - containerPort: 7400
+                    hostPort: 7400
+                imagePullPolicy: Never
+    selector:
+      matchLabels: 
+        project: smartuni
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: cps-smartuni-tempsensor0-2
+spec:
+    replicas: 1
+    template:
+        metadata:
+            labels:
+                project: smartuni
+        spec:
+            containers:
+              - name: tempsensor0-2
+                image: cps-smartuni-tempsensor0-2
+                imagePullPolicy: Never
+    selector:
+      matchLabels: 
+        project: smartuni
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: cps-smartuni-tempvalidator0 
+spec:
+    replicas: 1
+    template:
+        metadata:
+            labels:
+                project: smartuni
+        spec:
+            containers:
+              - name: tempvalidator0 
+                image: cps-smartuni-tempvalidator0 
+                imagePullPolicy: Never
+    selector:
+      matchLabels: 
+        project: smartuni
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: cps-smartuni-weather
+spec:
+    replicas: 1
+    template:
+        metadata:
+            labels:
+                project: smartuni
+        spec:
+            containers:                
+              - name: weather
+                image: cps-smartuni-weather
+                imagePullPolicy: Never
+    selector:
+      matchLabels: 
+        project: smartuni
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: cps-smartuni-calendar0
+spec:
+    replicas: 1
+    template:
+        metadata:
+            labels:
+                project: smartuni
+        spec:
+            containers:
+              - name: calendar0
+                image: cps-smartuni-calendar0
+                imagePullPolicy: Never
+    selector:
+      matchLabels: 
+        project: smartuni
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: cps-smartuni-calendarvalidator0
+spec:
+    replicas: 1
+    template:
+        metadata:
+            labels:
+                project: smartuni
+        spec:
+            containers:
+              - name: calendarvalidator0
+                image: cps-smartuni-calendarvalidator0
+                imagePullPolicy: Never
+    selector:
+      matchLabels: 
+        project: smartuni
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: cps-smartuni-adjustment0
+spec:
+    replicas: 1
+    template:
+        metadata:
+            labels:
+                project: smartuni
+        spec:
+            containers:
+              - name: adjustment0
+                image: cps-smartuni-adjustment0
+                imagePullPolicy: Never
+    selector:
+      matchLabels: 
+        project: smartuni
+        
+---
+#apiVersion: extensions/v1beta1
+#kind: Deployment
+#metadata:
+#    name: cps-k8slab-power-monitor
+#spec:
+#    replicas: 1
+#    template:
+#        metadata:
+#            labels:
+#                project: power
+#        spec:
+#            containers:
+#              - name: monitor
+#                image: cps-k8slab-monitor
+#                imagePullPolicy: Never
