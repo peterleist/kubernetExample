@@ -1,3 +1,5 @@
+package hu.bme.mit.cps.smartuniversity.monitor;
+
 public class State {
     private String id;
     private StateType type;

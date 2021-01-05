@@ -1,3 +1,5 @@
+package hu.bme.mit.cps.smartuniversity.monitor;
+
 public class Transition {
     private String id;
     private State sender;

@@ -1,3 +1,5 @@
+package hu.bme.mit.cps.smartuniversity.monitor;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

@@ -1,3 +1,5 @@
+package hu.bme.mit.cps.smartuniversity.monitor;
+
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;

@@ -22,3 +22,8 @@ struct EnvironmentTemperature{
     long long TimeStamp;
     float TValue;
 };
+
+struct SystemState {
+    long long TimeStamp;
+    long SState; 
+};
