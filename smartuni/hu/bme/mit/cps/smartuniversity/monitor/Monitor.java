@@ -27,8 +27,6 @@ import hu.bme.mit.cps.smartuniversity.SystemMessageSeq;
 import hu.bme.mit.cps.smartuniversity.SystemMessageTypeSupport;
 import hu.bme.mit.cps.smartuniversity.SystemState;
 
-import hu.bme.mit.cps.smartuniversity.TemperatureTypeSupport;
-
 public class Monitor {
 	private static Automaton automaton;
 	private static State actualState;
@@ -60,17 +58,16 @@ public class Monitor {
 		 * LogCategory.NDDS_CONFIG_LOG_CATEGORY_API,
 		 * LogVerbosity.NDDS_CONFIG_LOG_VERBOSITY_STATUS_ALL);
 		 */
+		
+		Specification spec = new Specification();
+		automaton = spec.getAutomata().get(0);
+		actualState = automaton.getInitial();
+		goodStates = new ArrayList<State>();
+		goodStates.add(automaton.getFinale());
+		requirementFullfilled = true;
 
 		// --- Run --- //
 		subscriberMain(domainId, sampleCount);
-	}
-	
-	public Monitor(Automaton automaton) {
-		Monitor.automaton = automaton;
-		this.actualState = automaton.getInitial();
-		this.goodStates = new ArrayList<State>();
-		this.goodStates.add(automaton.getFinale());
-		this.requirementFullfilled = true;
 	}
 	
 	public static boolean goodStateReached() {
@@ -110,7 +107,7 @@ public class Monitor {
 		}
 		
 		requirementFullfilled = false;
-		System.out.println("Failure: receivedMessage didn't match any transitions.");
+		//System.out.println("Failure: receivedMessage didn't match any transitions.");
 	}
 	
 	static void updateMonitorStatus(Transition transition) {
@@ -183,7 +180,7 @@ public class Monitor {
 
 			/* Register type before creating topic */
 			String systemMessageTypeName = SystemMessageTypeSupport.get_type_name();
-			TemperatureTypeSupport.register_type(participant, systemMessageTypeName);
+			SystemMessageTypeSupport.register_type(participant, systemMessageTypeName);
 
 			/*
 			 * To customize topic QoS, use the configuration file USER_QOS_PROFILES.xml
@@ -199,6 +196,7 @@ public class Monitor {
 			// --- Create reader --- //
 
 			systemListener = new SystemListener();
+			Calendar calendar = Calendar.getInstance();
 
 			/*
 			 * To customize data reader QoS, use the configuration file
@@ -215,15 +213,18 @@ public class Monitor {
 			// --- Wait for data --- //
 
 			final long receivePeriodSec = 4;
-			SystemState instance = null;
+			SystemState instance = new SystemState();
 
 			for (int count = 0; (sampleCount == 0) || (count < sampleCount); ++count) {
 				System.out.println("System Message subscriber sleeping for " + receivePeriodSec + " sec...");
 
-				String[] splitSystemMessage = systemMessage.SMessage.split(".");
-				update(splitSystemMessage[0], splitSystemMessage[1], splitSystemMessage[2], new String[] {});
-				instance.TimeStamp = Calendar.getInstance().getTimeInMillis();
-				instance.SState = requirementSatisfied() ? 1 : 0;
+				if (systemMessage != null) {
+					String[] splitSystemMessage = systemMessage.SMessage.split(" ");
+					update(splitSystemMessage[0], splitSystemMessage[1], splitSystemMessage[2], new String[] {});
+					instance.TimeStamp = calendar.getInstance().getTimeInMillis();
+					instance.SState = requirementSatisfied() ? 1 : 0;
+				}
+				
 				if (instance != null) {
 					System.out.println("Valid SystemState" + instance.toString());
 					db.addData(instance.TimeStamp, instance.SState, "state");

@@ -397,26 +397,35 @@ public class TempValidator {
                 	writer.write(valid, instance_handle);
                 	db.addData(valid.TimeStamp, valid.TValue, valid.TLabID, "lab");
                 	time_out = 0;
+                	
+                	if (count != 0) {
+	                	SystemMessage message1 = new SystemMessage();
+	            		message1.TimeStamp = 2;
+	            		message1.SMessage = "validator validator validateAfter";
+	            		monitorWriter.write(message1, instance_handle);
+	            		System.out.println("TempValidator sent after message to monitor.");
+                	} else {
+                		SystemMessage message = new SystemMessage();
+                		message.TimeStamp = 1;
+                		message.SMessage = "validator validator validateBefore";
+                		monitorWriter.write(message, instance_handle);
+                		System.out.println("TempValidator sent before message to monitor.");
+                	}
+                	
                 }
                 
                 if(time_out >= 10) {
                 	Temperature validAfter = validateAfter();
+                	
                 	if(validAfter != null) {
                 		writer.write(validAfter, instance_handle);
-                		SystemMessage message = new SystemMessage();
-                		message.TimeStamp = validAfter.TimeStamp;
-                		message.SMessage = "validator.validator.validateAfter";
-                		monitorWriter.write(message, instance_handle);
                 		db.addData(validAfter.TimeStamp, validAfter.TValue, validAfter.TLabID, "lab");
                 	}
                 	else {
                 		Temperature validBefore = validateBefore();
+                		
                 		if(validBefore != null) {
                     		writer.write(validBefore, instance_handle);
-                    		SystemMessage message = new SystemMessage();
-                    		message.TimeStamp = validBefore.TimeStamp;
-                    		message.SMessage = "validator.validator.validateBefore";
-                    		monitorWriter.write(message, instance_handle);
                     		db.addData(validBefore.TimeStamp, validBefore.TValue, validBefore.TLabID, "lab");
                     	}
                 	}
