@@ -27,3 +27,8 @@ struct SystemState {
     long long TimeStamp;
     long SState; 
 };
+
+struct SystemMessage {
+    long long TimeStamp;
+    string SMessage;
+};

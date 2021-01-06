@@ -130,3 +130,15 @@ smartuni/hu/bme/mit/cps/smartuniversity/SystemStateSeq.java
 smartuni/hu/bme/mit/cps/smartuniversity/SystemStateSubscriber.java
 smartuni/hu/bme/mit/cps/smartuniversity/SystemStateTypeCode.java
 smartuni/hu/bme/mit/cps/smartuniversity/SystemStateTypeSupport.java
+.gitignore.swp
+smartuni/.docker-build.sh.swp
+smartuni/Run SystemMessagePublisher.launch
+smartuni/Run SystemMessageSubscriber.launch
+smartuni/hu/bme/mit/cps/smartuniversity/SystemMessage.java
+smartuni/hu/bme/mit/cps/smartuniversity/SystemMessageDataReader.java
+smartuni/hu/bme/mit/cps/smartuniversity/SystemMessageDataWriter.java
+smartuni/hu/bme/mit/cps/smartuniversity/SystemMessagePublisher.java
+smartuni/hu/bme/mit/cps/smartuniversity/SystemMessageSeq.java
+smartuni/hu/bme/mit/cps/smartuniversity/SystemMessageSubscriber.java
+smartuni/hu/bme/mit/cps/smartuniversity/SystemMessageTypeCode.java
+smartuni/hu/bme/mit/cps/smartuniversity/SystemMessageTypeSupport.java

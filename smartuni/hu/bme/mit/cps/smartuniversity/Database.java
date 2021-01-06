@@ -28,5 +28,13 @@ public class Database {
         	    .addField("labID", id)
         	    .build());
 	}
+	
+	public void addData(long timestamp, int state, String meas) {
+		databaseConnection.write(Point.measurement(meas)
+        	    .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
+        	    .addField("value", state)
+        	    .addField("timestamp", timestamp)
+        	    .build());
+	}
 
 }

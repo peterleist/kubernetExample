@@ -21,6 +21,9 @@ import com.rti.dds.subscription.ViewStateKind;
 import com.rti.dds.topic.Topic;
 
 import hu.bme.mit.cps.smartuniversity.Database;
+import hu.bme.mit.cps.smartuniversity.SystemMessage;
+import hu.bme.mit.cps.smartuniversity.SystemMessageDataWriter;
+import hu.bme.mit.cps.smartuniversity.SystemMessageTypeSupport;
 import hu.bme.mit.cps.smartuniversity.Temperature;
 import hu.bme.mit.cps.smartuniversity.TemperatureDataReader;
 import hu.bme.mit.cps.smartuniversity.TemperatureDataWriter;
@@ -256,9 +259,11 @@ public class TempValidator {
         Subscriber subscriber = null;
         Publisher publisher = null;
         Topic topic = null;
+        Topic monitorTopic = null;
         DataReaderListener listener = null;
         TemperatureDataReader reader = null;
         TemperatureDataWriter writer = null;
+        SystemMessageDataWriter monitorWriter = null;
         Database db = new Database();
         data = initData();
         
@@ -319,7 +324,22 @@ public class TempValidator {
             if (topic == null) {
                 System.err.println("create_topic error\n");
                 return;
-            }   
+            }
+            
+            String monitorTypeName = SystemMessageTypeSupport.get_type_name();
+            SystemMessageTypeSupport.register_type(participant, monitorTypeName);
+
+            /* To customize topic QoS, use
+            the configuration file USER_QOS_PROFILES.xml */
+
+            monitorTopic = participant.create_topic(
+                "MonitorTopic",
+                monitorTypeName, DomainParticipant.TOPIC_QOS_DEFAULT,
+                null /* listener */, StatusKind.STATUS_MASK_NONE);
+            if (monitorTopic == null) {
+                System.err.println("create_topic error\n");
+                return;
+            }
             
             // --- Create writer --- //
 
@@ -331,6 +351,15 @@ public class TempValidator {
                 topic, Publisher.DATAWRITER_QOS_DEFAULT,
                 null /* listener */, StatusKind.STATUS_MASK_NONE);
             if (writer == null) {
+                System.err.println("create_datawriter error\n");
+                return;
+            }
+            
+            monitorWriter = (SystemMessageDataWriter)
+            publisher.create_datawriter(
+                monitorTopic, Publisher.DATAWRITER_QOS_DEFAULT,
+                null /* listener */, StatusKind.STATUS_MASK_NONE);
+            if (monitorWriter == null) {
                 System.err.println("create_datawriter error\n");
                 return;
             }
@@ -374,12 +403,20 @@ public class TempValidator {
                 	Temperature validAfter = validateAfter();
                 	if(validAfter != null) {
                 		writer.write(validAfter, instance_handle);
+                		SystemMessage message = new SystemMessage();
+                		message.TimeStamp = validAfter.TimeStamp;
+                		message.SMessage = "validator.validator.validateAfter";
+                		monitorWriter.write(message, instance_handle);
                 		db.addData(validAfter.TimeStamp, validAfter.TValue, validAfter.TLabID, "lab");
                 	}
                 	else {
                 		Temperature validBefore = validateBefore();
                 		if(validBefore != null) {
                     		writer.write(validBefore, instance_handle);
+                    		SystemMessage message = new SystemMessage();
+                    		message.TimeStamp = validBefore.TimeStamp;
+                    		message.SMessage = "validator.validator.validateBefore";
+                    		monitorWriter.write(message, instance_handle);
                     		db.addData(validBefore.TimeStamp, validBefore.TValue, validBefore.TLabID, "lab");
                     	}
                 	}

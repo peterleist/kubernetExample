@@ -373,6 +373,25 @@ spec:
       matchLabels: 
         project: smartuni    
 ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: cps-smartuni-monitor
+spec:
+    replicas: 1
+    template:
+        metadata:
+            labels:
+                project: smartuni
+        spec:
+            containers:
+              - name: monitor
+                image: cps-smartuni-monitor
+                imagePullPolicy: Never
+    selector:
+      matchLabels: 
+        project: smartuni
+---
 #apiVersion: extensions/v1beta1
 #kind: Deployment
 #metadata:
