@@ -14,6 +14,9 @@ import com.rti.dds.infrastructure.StatusKind;
 import com.rti.dds.publication.Publisher;
 import com.rti.dds.topic.Topic;
 
+import hu.bme.mit.cps.smartuniversity.SystemMessage;
+import hu.bme.mit.cps.smartuniversity.SystemMessageDataWriter;
+import hu.bme.mit.cps.smartuniversity.SystemMessageTypeSupport;
 import hu.bme.mit.cps.smartuniversity.Temperature;
 import hu.bme.mit.cps.smartuniversity.TemperatureDataWriter;
 import hu.bme.mit.cps.smartuniversity.TemperatureTypeSupport;
@@ -72,7 +75,9 @@ private static int lab_id = 0;
         DomainParticipant participant = null;
         Publisher publisher = null;
         Topic topic = null;
+        Topic monitorTopic = null;
         TemperatureDataWriter writer = null;
+        SystemMessageDataWriter monitorWriter = null;
 
         ArrayList<Float> data = new ArrayList<Float>(); 
         
@@ -139,7 +144,22 @@ private static int lab_id = 0;
             if (topic == null) {
                 System.err.println("create_topic error\n");
                 return;
-            }           
+            }  
+            
+            String monitorTypeName = SystemMessageTypeSupport.get_type_name();
+            SystemMessageTypeSupport.register_type(participant, monitorTypeName);
+
+            /* To customize topic QoS, use
+            the configuration file USER_QOS_PROFILES.xml */
+
+            monitorTopic = participant.create_topic(
+                "MonitorTopic",
+                monitorTypeName, DomainParticipant.TOPIC_QOS_DEFAULT,
+                null /* listener */, StatusKind.STATUS_MASK_NONE);
+            if (monitorTopic == null) {
+                System.err.println("create_topic error\n");
+                return;
+            }
 
             // --- Create writer --- //
 
@@ -153,7 +173,16 @@ private static int lab_id = 0;
             if (writer == null) {
                 System.err.println("create_datawriter error\n");
                 return;
-            }           
+            }
+            
+            monitorWriter = (SystemMessageDataWriter)
+	            publisher.create_datawriter(
+	                monitorTopic, Publisher.DATAWRITER_QOS_DEFAULT,
+	                null /* listener */, StatusKind.STATUS_MASK_NONE);
+	            if (monitorWriter == null) {
+	                System.err.println("create_datawriter error\n");
+	                return;
+	            }
 
             // --- Write --- //
 
@@ -194,6 +223,15 @@ private static int lab_id = 0;
                 
                 /* Write data */
                 writer.write(instance, instance_handle);
+                
+                if (instance.TLabID == 0) {
+	                SystemMessage message1 = new SystemMessage();
+	        		message1.TimeStamp = instance.TimeStamp;
+	        		message1.SMessage = "sensor sensor publishTemperature";
+	        		monitorWriter.write(message1, instance_handle);
+	        		System.out.println("TempSensor sent publish temp message to monitor.");
+                }
+        		
                 try {
                     Thread.sleep(sendPeriodMillis);
                 } catch (InterruptedException ix) {

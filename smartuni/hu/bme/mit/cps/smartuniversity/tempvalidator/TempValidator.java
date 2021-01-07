@@ -392,26 +392,19 @@ public class TempValidator {
 
                 Temperature valid = validate();
                 
+                if (valid != null && valid.TLabID == 0) {
+	                SystemMessage message1 = new SystemMessage();
+	        		message1.TimeStamp = valid.TimeStamp;
+	        		message1.SMessage = "validator validator validateTemperature";
+	        		monitorWriter.write(message1, instance_handle);
+	        		System.out.println("TempValidator sent validate message to monitor.");
+                }
+                
                 if(valid != null) {
                 	System.out.println("Valid Temperature" + valid.toString());
                 	writer.write(valid, instance_handle);
                 	db.addData(valid.TimeStamp, valid.TValue, valid.TLabID, "lab");
                 	time_out = 0;
-                	
-                	if (count != 0) {
-	                	SystemMessage message1 = new SystemMessage();
-	            		message1.TimeStamp = 2;
-	            		message1.SMessage = "validator validator validateAfter";
-	            		monitorWriter.write(message1, instance_handle);
-	            		System.out.println("TempValidator sent after message to monitor.");
-                	} else {
-                		SystemMessage message = new SystemMessage();
-                		message.TimeStamp = 1;
-                		message.SMessage = "validator validator validateBefore";
-                		monitorWriter.write(message, instance_handle);
-                		System.out.println("TempValidator sent before message to monitor.");
-                	}
-                	
                 }
                 
                 if(time_out >= 10) {
@@ -467,7 +460,7 @@ public class TempValidator {
     // =======================================================================
 
     private static class TempListener extends DataReaderAdapter {
-
+    	
     	TemperatureSeq _dataSeq = new TemperatureSeq();
         SampleInfoSeq _infoSeq = new SampleInfoSeq();
 
@@ -488,7 +481,7 @@ public class TempValidator {
                     SampleInfo info = (SampleInfo)_infoSeq.get(i);
 
                     if (info.valid_data) {
-                    	
+                 
                     	//System.out.println(_dataSeq.get(i));
                     	Temperature instance = new Temperature(_dataSeq.get(i));
                     	
@@ -498,16 +491,17 @@ public class TempValidator {
                         	System.out.println(instance.toString());
                         	//System.out.println(instance.USensorID);
                         	if( instance.TLabID == lab_id) {
-                        	data.set(instance.TSensorID, instance);
-                            //printData();
+	                        	data.set(instance.TSensorID, instance);
+	                  
+	                            //printData();
                         	}
                         	
                         	if(instance.TLabID == lab_id-1) {
-                        	dataToleantBefore.set(instance.TSensorID, instance);	
+                        		dataToleantBefore.set(instance.TSensorID, instance);
                         	}
                         	
                         	if(instance.TLabID == lab_id+1) {
-                        	dataTolerantAfter.set(instance.TSensorID, instance);		
+                        		dataTolerantAfter.set(instance.TSensorID, instance);
                         	}
                         }
                         

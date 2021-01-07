@@ -13,11 +13,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class Specification{
+public class SpecificationBad{
 	private String id = "spec1";
 	private ArrayList<Automaton> automatas;
 	
-	public Specification(){
+	public SpecificationBad(){
 		automatas = new ArrayList<Automaton>();
 		String str;
 		String str1;
@@ -28,7 +28,7 @@ public class Specification{
 		State finalState;
 		State newState;
 		State acceptState_new;
-		Automaton a = new Automaton("temperature_calculation");
+		Automaton a = new Automaton("playlist_generation");
 		Automaton b;
 		Map<String, Automaton> altauto;
 		ArrayList<Automaton> parauto;
@@ -42,32 +42,8 @@ public class Specification{
 		b.addState(actualState);
 		b.setInitial(actualState);
 											
-		b.addTransition(new Transition("!(" + "sensor" + "." +	
-			"publishTemperature" + "("
-			+ ")"
-			
-			+ "." + "sensor)", actualState, actualState));
-		
-		newState = new State("q" + counter, StateType.FINAL);
-		counter++;
-		b.addTransition(new Transition("sensor" + "." +
-		
-		"publishTemperature" + "("
-		+ ")"
-		
-		+ "." + "sensor" , actualState, newState));
-		b.addState(newState);
-		b.setFinale(newState);
-		a.collapse(b);
-		
-		b = new Automaton("auto7");
-		actualState = new State("q" + counter, StateType.NORMAL);
-		counter++;
-		b.addState(actualState);
-		b.setInitial(actualState);
-											
 		b.addTransition(new Transition("!(" + "validator" + "." +	
-			"validateTemperature" + "("
+			"validateBefore" + "("
 			+ ")"
 			
 			+ "." + "validator)", actualState, actualState));
@@ -76,7 +52,7 @@ public class Specification{
 		counter++;
 		b.addTransition(new Transition("validator" + "." +
 		
-		"validateTemperature" + "("
+		"validateBefore" + "("
 		+ ")"
 		
 		+ "." + "validator" , actualState, newState));
@@ -90,20 +66,20 @@ public class Specification{
 		b.addState(actualState);
 		b.setInitial(actualState);
 											
-		b.addTransition(new Transition("!(" + "calculator" + "." +	
-			"addData" + "("
+		b.addTransition(new Transition("!(" + "validator" + "." +	
+			"validateAfter" + "("
 			+ ")"
 			
-			+ "." + "db)", actualState, actualState));
+			+ "." + "validator)", actualState, actualState));
 		
 		newState = new State("q" + counter, StateType.FINAL);
 		counter++;
-		b.addTransition(new Transition("calculator" + "." +
+		b.addTransition(new Transition("validator" + "." +
 		
-		"addData" + "("
+		"validateAfter" + "("
 		+ ")"
 		
-		+ "." + "db" , actualState, newState));
+		+ "." + "validator" , actualState, newState));
 		b.addState(newState);
 		b.setFinale(newState);
 		a.collapse(b);
@@ -241,7 +217,7 @@ public class Specification{
         }
 	
 	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException{
-		Specification specification = new Specification();
+		SpecificationBad specification = new SpecificationBad();
 		specification.listAutomatas();
 		boolean acceptState = false;
 		

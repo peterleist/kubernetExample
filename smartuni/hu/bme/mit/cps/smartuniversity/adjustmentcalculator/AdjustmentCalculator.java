@@ -53,6 +53,7 @@ java -Djava.ext.dirs=$NDDSHOME/class PowerSubscriber <domain_id>
 
 import com.rti.dds.domain.*;
 import com.rti.dds.infrastructure.*;
+import com.rti.dds.publication.Publisher;
 import com.rti.dds.subscription.*;
 import com.rti.dds.topic.*;
 
@@ -64,6 +65,9 @@ import hu.bme.mit.cps.smartuniversity.EnvironmentTemperature;
 import hu.bme.mit.cps.smartuniversity.EnvironmentTemperatureDataReader;
 import hu.bme.mit.cps.smartuniversity.EnvironmentTemperatureSeq;
 import hu.bme.mit.cps.smartuniversity.EnvironmentTemperatureTypeSupport;
+import hu.bme.mit.cps.smartuniversity.SystemMessage;
+import hu.bme.mit.cps.smartuniversity.SystemMessageDataWriter;
+import hu.bme.mit.cps.smartuniversity.SystemMessageTypeSupport;
 import hu.bme.mit.cps.smartuniversity.Database;
 import hu.bme.mit.cps.smartuniversity.Adjustment;
 import hu.bme.mit.cps.smartuniversity.Temperature;
@@ -194,15 +198,18 @@ public class AdjustmentCalculator {
 
 		DomainParticipant participant = null;
 		Subscriber subscriber = null;
+		Publisher publisher = null;
 		Topic entryTopic = null;
 		Topic temperatureTopic = null;
 		Topic weatherTopic = null;
+		Topic monitorTopic = null;
 		TemperatureListener temperatureListener = null;
 		EntryListener entryListener = null;
 		WeatherListener weatherListener = null;
 		EntryDataReader entryReader = null;
 		TemperatureDataReader temperatureReader = null;
 		EnvironmentTemperatureDataReader weatherReader = null;
+		SystemMessageDataWriter monitorWriter = null;
 		Database db = new Database();
 
 		try {
@@ -220,6 +227,14 @@ public class AdjustmentCalculator {
 				System.err.println("create_participant error\n");
 				return;
 			}
+			
+			publisher = participant.create_publisher(
+                DomainParticipant.PUBLISHER_QOS_DEFAULT, null /* listener */,
+                StatusKind.STATUS_MASK_NONE);
+            if (publisher == null) {
+                System.err.println("create_publisher error\n");
+                return;
+            }
 
 			// --- Create subscriber --- //
 
@@ -268,6 +283,21 @@ public class AdjustmentCalculator {
 				System.err.println("create_topic error\n");
 				return;
 			}
+			
+			String monitorTypeName = SystemMessageTypeSupport.get_type_name();
+            SystemMessageTypeSupport.register_type(participant, monitorTypeName);
+
+            /* To customize topic QoS, use
+            the configuration file USER_QOS_PROFILES.xml */
+
+            monitorTopic = participant.create_topic(
+                "MonitorTopic",
+                monitorTypeName, DomainParticipant.TOPIC_QOS_DEFAULT,
+                null /* listener */, StatusKind.STATUS_MASK_NONE);
+            if (monitorTopic == null) {
+                System.err.println("create_topic error\n");
+                return;
+            }
 
 			// --- Create reader --- //
 
@@ -284,6 +314,15 @@ public class AdjustmentCalculator {
 				System.err.println("create_datareader error\n");
 				return;
 			}
+			
+			monitorWriter = (SystemMessageDataWriter)
+            publisher.create_datawriter(
+                monitorTopic, Publisher.DATAWRITER_QOS_DEFAULT,
+                null /* listener */, StatusKind.STATUS_MASK_NONE);
+            if (monitorWriter == null) {
+                System.err.println("create_datawriter error\n");
+                return;
+            }
 
 			entryListener = new EntryListener();
 
@@ -309,6 +348,7 @@ public class AdjustmentCalculator {
 
 			// --- Wait for data --- //
 
+			InstanceHandle_t instance_handle = InstanceHandle_t.HANDLE_NIL;
 			final long receivePeriodSec = 4;
 			Adjustment instance = null;
 
@@ -319,6 +359,14 @@ public class AdjustmentCalculator {
 				if (instance != null) {
 					System.out.println("Valid Adjustment" + instance.toString());
 					db.addData(instance.TimeStamp, instance.AValue, instance.ALabID, "adjustment");
+					
+					if (instance.ALabID == 0) {
+						SystemMessage message1 = new SystemMessage();
+		        		message1.TimeStamp = instance.TimeStamp;
+		        		message1.SMessage = "calculator db addData";
+		        		monitorWriter.write(message1, instance_handle);
+		        		System.out.println("AdjustmentCalculator sent addData message to monitor.");
+					}
 				}
 
 				try {
